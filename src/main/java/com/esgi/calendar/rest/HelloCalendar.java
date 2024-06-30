@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-//@RestController("${api.prefix}")
-@RequestMapping(path = "${apiPrefix}")
+//@RestController("/api")
+@RestController
+@RequestMapping("api")
 public class HelloCalendar {
     @GetMapping("/hello")
     public String helloWorld() {

@@ -4,7 +4,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("${rest.prefix}")
+//@RestController()
 public class CustomErrorController implements ErrorController {
 
     @RequestMapping("/error")
@@ -13,6 +13,8 @@ public class CustomErrorController implements ErrorController {
     }
 
     public String getErrorPath() {
+
+        System.out.println("error path");
         return "/error";
     }
 }

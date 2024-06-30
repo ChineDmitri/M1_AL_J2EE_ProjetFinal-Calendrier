@@ -10,6 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegistrationForm {
+    private String firstName;
+    private String lastName;
     private String email;
-    private String motDePasse;
+    private String password;
+    private Long   theme;
 }
