@@ -1,0 +1,90 @@
+@startuml
+
+package "Entités" {
+    class Utilisateur {
+        - id: Long
+        - prenom: String
+        - nom: String
+        - email: String
+        - motDePasse: String
+        - theme: Theme
+        - points: int
+        + Utilisateur(prenom: String, nom: String, email: String, motDePasse: String, theme: Theme)
+        + getId(): Long
+        + getPrenom(): String
+        + setPrenom(prenom: String): void
+        + getNom(): String
+        + setNom(nom: String): void
+        + getEmail(): String
+        + setEmail(email: String): void
+        + getMotDePasse(): String
+        + setMotDePasse(motDePasse: String): void
+        + getTheme(): Theme
+        + setTheme(theme: Theme): void
+        + getPoints(): int
+        + setPoints(points: int): void
+    }
+
+    class Theme {
+        - id: Long
+        - nom: String
+        + Theme(nom: String)
+        + getId(): Long
+        + getNom(): String
+        + setNom(nom: String): void
+    }
+
+    class Jour {
+        - id: Long
+        - date: LocalDate
+        - gifs: List<Gif>
+        + Jour(date: LocalDate)
+        + getId(): Long
+        + getDate(): LocalDate
+        + setDate(date: LocalDate): void
+        + getGifs(): List<Gif>
+        + ajouterGif(gif: Gif): void
+        + retirerGif(gif: Gif): void
+    }
+
+    class Gif {
+        - id: Long
+        - url: String
+        - legende: String
+        - prixEnPoints: int
+        - jour: Jour
+        - reactions: List<Reaction>
+        + Gif(url: String, legende: String, prixEnPoints: int, jour: Jour)
+        + getId(): Long
+        + getUrl(): String
+        + setUrl(url: String): void
+        + getLegende(): String
+        + setLegende(legende: String): void
+        + getPrixEnPoints(): int
+        + setPrixEnPoints(prixEnPoints: int): void
+        + getJour(): Jour
+        + setJour(jour: Jour): void
+        + getReactions(): List<Reaction>
+        + ajouterReaction(reaction: Reaction): void
+        + retirerReaction(reaction: Reaction): void
+    }
+
+    class Reaction {
+        - id: Long
+        - emotion: String
+        - utilisateur: Utilisateur
+        + Reaction(emotion: String, utilisateur: Utilisateur)
+        + getId(): Long
+        + getEmotion(): String
+        + setEmotion(emotion: String): void
+        + getUtilisateur(): Utilisateur
+        + setUtilisateur(utilisateur: Utilisateur): void
+    }
+}
+
+Utilisateur "1" -- "1" Theme : a
+Utilisateur "1" -- "*" Gif : téléversements
+Gif "1" -- "1" Jour : appartient a
+Gif "*" -- "*" Reaction : reçoit
+
+@enduml
