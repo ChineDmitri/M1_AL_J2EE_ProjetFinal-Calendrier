@@ -44,7 +44,7 @@ public class SecurityConfiguration {
             )
             .formLogin(formLogin -> formLogin
                     .loginPage("/login")
-                    .defaultSuccessUrl("/api/hello-helloprotected", true)
+                    .defaultSuccessUrl("/weekly-calendar", true)
                     .successHandler(customAuthenticationSuccessHandler())
                     .permitAll()
             )

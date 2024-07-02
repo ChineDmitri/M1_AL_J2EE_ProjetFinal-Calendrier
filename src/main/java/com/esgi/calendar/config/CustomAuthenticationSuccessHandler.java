@@ -21,7 +21,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                                                                        ServletException {
 
         if (authentication != null && authentication.isAuthenticated()) {
-            response.sendRedirect("/api/hello-protected");
+            response.sendRedirect("/weekly-calendar");
         } else {
             response.sendRedirect("/login");
         }

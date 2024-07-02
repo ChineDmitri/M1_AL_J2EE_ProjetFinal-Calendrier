@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Calendar</title>
+</head>
+<body>
+<h1>Weekly Calendar</h1>
+
+<table>
+    <tr>
+        <th>Date</th>
+    </tr>
+    <tr th:each="date : ${weekDates}">
+        <td th:text="${date}"></td>
+    </tr>
+</table>
+
+<!--<div>-->
+<!--    <a th:href="@{/weekly-calendar(week=${currentWeekNumber - 1})}" th:if="${currentWeekNumber > 1}">Previous Week</a>-->
+<!--    <span th:text="${currentWeekNumber}"></span>-->
+<!--    <a th:href="@{/weekly-calendar(week=${currentWeekNumber + 1})}" th:if="${currentWeekNumber < weeksInMonth}">Next Week</a>-->
+<!--</div>-->
+</body>
+</html>
