@@ -38,40 +38,5 @@ public class DayOfActualMonthServiceImpl implements ICalendarService {
                                               .toList();
 
     }
-
-    //    public List<DayOfActualMonth> getAfter7Days() {
-    //        LocalDate currentDate = LocalDate.now();
-    //        LocalDate startDate = currentDate.minusDays(
-    //                currentDate
-    //                        .getDayOfWeek()
-    //                        .getValue() - 1
-    //        );
-    //        LocalDate endDate = currentDate.plusDays(6);
-    //        return this.dayOfActualMonthRepository.findDaysBetwenTwoDate(currentDate,
-    //                                                                     endDate);
-    //    }
-    //
-    //    @Override
-    //    public List<DayOfActualMonth> getWeekDatesWithOffset(int offset) {
-    //        LocalDate currentDate = LocalDate.now().plusWeeks(offset);
-    //        LocalDate startDate = currentDate.minusDays(currentDate.getDayOfWeek().getValue() - 1);
-    //        LocalDate endDate = startDate.plusDays(6);
-    //        return this.dayOfActualMonthRepository.findDaysBetwenTwoDate(startDate, endDate);
-    //    }
-    //
-    //    public int getCurrentWeekOfMonth(int week, LocalDate today) {
-    //        int currentWeekOfMonth = today.get(ChronoField.ALIGNED_WEEK_OF_MONTH);
-    //
-    //        LocalDate startDateOfWeek;
-    //        if (week == currentWeekOfMonth) {
-    //            startDateOfWeek = today.minusDays(today.getDayOfWeek()
-    //                                                   .getValue() - 1);
-    //        } else {
-    //            startDateOfWeek = today.withDayOfMonth(1)
-    //                                   .plusWeeks(week - 1);
-    //            startDateOfWeek = startDateOfWeek.minusDays(startDateOfWeek.getDayOfWeek()
-    //                                                                       .getValue() - 1);
-    //        }
-    //        return currentWeekOfMonth;
-    //    }
+    
 }

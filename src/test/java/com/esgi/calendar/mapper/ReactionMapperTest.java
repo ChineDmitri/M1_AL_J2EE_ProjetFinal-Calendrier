@@ -17,13 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @ExtendWith(MockitoExtension.class)
 public class ReactionMapperTest {
 
-    //    @Mock
-    private Reaction reaction;
-
-    //    @Mock
-    private ReactionDto reactionDto;
-
-    //    @InjectMocks
+    private Reaction       reaction;
+    private ReactionDto    reactionDto;
     private ReactionMapper reactionMapper;
 
     @BeforeEach
@@ -42,15 +37,6 @@ public class ReactionMapperTest {
                 "password",
                 null
         );
-        reaction.setUserCustomer(user);
-        //        when(reaction.getId()).thenReturn(1L);
-        //        when(reaction.getEmoji().getUnicode()).thenReturn("UNICODE");
-        //        when(reaction.getUserCustomer().getFirstName()).thenReturn("First Name");
-        //        when(reaction.getUserCustomer().getLastName()).thenReturn("Last Name");
-        //
-        //        when(reactionDto.getId()).thenReturn(1L);
-        //        when(reactionDto.getContent()).thenReturn("Test Reaction");
-        //        when(reactionDto.getUserId()).thenReturn(100L);
 
     }
 
