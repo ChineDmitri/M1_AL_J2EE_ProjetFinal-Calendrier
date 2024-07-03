@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Téléverser un GIF</title>
+</head>
+<body>
+    <h1>Placer un gif distant sur le
+        <span th:text="${currentDate}"></span>
+        (nombre de points :
+        <span th:text="${pointNumber}"></span>
+        )</h1>
+    <form>
+        <div class="file-field">
+            <label>Fichier à téléverser</label>
+            <input type="file">
+        </div>
+
+        <div class="legend-field">
+            <label>Légende</label>
+            <input type="text">
+        </div>
+
+        <button type="submit">Placer</button>
+    </form>
+</body>
+</html>
