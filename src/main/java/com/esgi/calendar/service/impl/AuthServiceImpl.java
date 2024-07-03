@@ -2,7 +2,7 @@ package com.esgi.calendar.service.impl;
 
 import com.esgi.calendar.business.Theme;
 import com.esgi.calendar.business.UserCustomer;
-import com.esgi.calendar.dto.req.RegistrationForm;
+import com.esgi.calendar.dto.req.RegistrationFormDto;
 import com.esgi.calendar.repository.UserRepository;
 import com.esgi.calendar.service.IUserService;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class AuthServiceImpl implements IUserService {
     private UserRepository  userRepository;
     private PasswordEncoder passwordEncoder;
 
-    public void register(RegistrationForm form, Theme theme) {
+    public void register(RegistrationFormDto form, Theme theme) {
 
 
         UserCustomer newUser = new UserCustomer();

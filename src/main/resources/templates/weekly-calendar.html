@@ -3,23 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Weekly Calendar</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Weekly Calendar</h1>
-
-<table>
-    <tr>
-        <th>Date</th>
-    </tr>
-    <tr th:each="date : ${weekDates}">
-        <td th:text="${date}"></td>
-    </tr>
-</table>
-
-<!--<div>-->
-<!--    <a th:href="@{/weekly-calendar(week=${currentWeekNumber - 1})}" th:if="${currentWeekNumber > 1}">Previous Week</a>-->
-<!--    <span th:text="${currentWeekNumber}"></span>-->
-<!--    <a th:href="@{/weekly-calendar(week=${currentWeekNumber + 1})}" th:if="${currentWeekNumber < weeksInMonth}">Next Week</a>-->
-<!--</div>-->
+<div class="container">
+    <h1 class="display-4">Calendrier</h1>
+    <div class="btn-group">
+        <button th:data-href="@{/weekly-calendar/{week}(week=${week-1})}"
+                onclick="location.href=this.dataset.href"
+                class="btn btn-secondary">
+            7 Jours Précédents
+        </button>
+        <button th:data-href="@{/weekly-calendar/{week}(week=${week+1})}"
+                onclick="location.href=this.dataset.href"
+                class="btn btn-secondary">
+            7 Jours Suivants
+        </button>
+    </div>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Jour</th>
+            <th>Gif</th>
+            <th>Utilisateur</th>
+            <th>Réaction(s)</th>
+        </tr>
+        <tr th:each="day : ${weekData}">
+            <td th:text="${day.date}"></td>
+            <td>
+                <img th:if="${day.gifOfDay != null}" th:src="|${day.gifOfDay.url}|" alt="Gif" class="img-fluid"/>
+                <span th:else th:text="${day.costGif}" class="text-muted"></span>
+            </td>
+            <td>
+                <span th:if="${day.gifOfDay!= null}" th:text="${day.gifOfDay.userOwnerFirstName}" class="font-weight-bold"></span>
+            </td>
+            <td>
+                <ul th:if="${day.gifOfDay!= null}" class="list-unstyled">
+                    <li th:each="reaction : ${day.gifOfDay.reactions}">
+                        <span th:text="${reaction.userFirstName} + ' + ${reaction.userLastName} + ' ${reaction.emojiUnicode}" class="text-secondary"></span>
+                    </li>
+                </ul>
+                <span th:unless="${day.gifOfDay!= null}" class="text-muted"></span>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

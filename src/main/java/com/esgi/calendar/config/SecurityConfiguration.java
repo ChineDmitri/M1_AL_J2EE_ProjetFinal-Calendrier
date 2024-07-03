@@ -44,8 +44,8 @@ public class SecurityConfiguration {
             )
             .formLogin(formLogin -> formLogin
                     .loginPage("/login")
-                    .defaultSuccessUrl("/weekly-calendar", true)
-                    .successHandler(customAuthenticationSuccessHandler())
+                    .defaultSuccessUrl("/weekly-calendar/0", true)
+                    // .successHandler(customAuthenticationSuccessHandler())
                     .permitAll()
             )
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));

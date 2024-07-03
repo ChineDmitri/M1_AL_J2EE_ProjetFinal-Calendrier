@@ -1,4 +1,4 @@
-package com.esgi.calendar.dto.req;
+package com.esgi.calendar.dto.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegistrationForm {
+public class UserCustomerDto {
+
+    private Long id;
+
     private String firstName;
+
     private String lastName;
-    private String email;
-    private String password;
-    private Long   theme;
+
+    private int totalPoints;
+
 }

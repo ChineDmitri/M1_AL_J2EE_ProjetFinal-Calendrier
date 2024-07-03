@@ -1,7 +1,7 @@
 package com.esgi.calendar.controller;
 
 import com.esgi.calendar.business.Theme;
-import com.esgi.calendar.dto.req.RegistrationForm;
+import com.esgi.calendar.dto.req.RegistrationFormDto;
 import com.esgi.calendar.repository.ThemeRepository;
 import com.esgi.calendar.service.impl.AuthServiceImpl;
 import lombok.AllArgsConstructor;
@@ -34,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String signup(RegistrationForm form) {
+    public String signup(RegistrationFormDto form) {
         Optional<Theme> theme = themeRepository.findById(form.getTheme());
         if (theme.isPresent()) {
             authService.register(form, theme.get());

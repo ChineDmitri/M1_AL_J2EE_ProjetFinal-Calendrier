@@ -14,6 +14,6 @@ public interface DayOfActualMonthRepository extends JpaRepository<DayOfActualMon
                     "WHERE d.date >= ?1 AND d.date <= ?2 " +
                     "ORDER BY d.date ASC"
     )
-    List<DayOfActualMonth> findDaysBeetwenTwoDate(LocalDate startDate, LocalDate endDate);
+    List<DayOfActualMonth> findDaysBetwenTwoDate(LocalDate startDate, LocalDate endDate);
 
 }

@@ -24,7 +24,7 @@ public class GifOfDay {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserCustomer user;
+    private UserCustomer userOwner;
 
     @OneToOne(mappedBy = "gifOfDay")
     private DayOfActualMonth dayOfActualMonth;
