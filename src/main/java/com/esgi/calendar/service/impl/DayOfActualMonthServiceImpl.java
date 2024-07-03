@@ -15,7 +15,7 @@ public class DayOfActualMonthServiceImpl implements IDayOfActualMonthService {
 
     private final DayOfActualMonthRepository dayOfActualMonthRepository;
 
-    public List<DayOfActualMonth> getSevenDaysFromToday() {
+    public List<DayOfActualMonth> getBetweenToday() {
         LocalDate currentDate = LocalDate.now();
         LocalDate startDate = currentDate.minusDays(
                 currentDate
@@ -23,7 +23,7 @@ public class DayOfActualMonthServiceImpl implements IDayOfActualMonthService {
                         .getValue() - 1
         );
         LocalDate endDate = currentDate.plusDays(6);
-        return this.dayOfActualMonthRepository.findSevenDaysFromToday(currentDate,
+        return this.dayOfActualMonthRepository.findDaysBeetwenTwoDate(currentDate,
                                                                       endDate);
     }
 }

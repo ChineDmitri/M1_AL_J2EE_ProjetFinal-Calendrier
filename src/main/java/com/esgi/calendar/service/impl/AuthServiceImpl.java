@@ -55,7 +55,8 @@ public class AuthServiceImpl implements IUserService {
         }
         List<GrantedAuthority> grantedAuthorities = getGrantedAuthorities(utilisateur);
 
-        return new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
+        return new UsernamePasswordAuthenticationToken(username, password,
+                                                       grantedAuthorities);
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(UserCustomer utilisateur) {

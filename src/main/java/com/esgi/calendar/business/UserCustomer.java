@@ -24,7 +24,7 @@ public class UserCustomer {
 
     String password;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 

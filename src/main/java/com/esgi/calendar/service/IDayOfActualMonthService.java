@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IDayOfActualMonthService {
 
-    public List<DayOfActualMonth> getSevenDaysFromToday();
+    public List<DayOfActualMonth> getBetweenToday();
 
 }
