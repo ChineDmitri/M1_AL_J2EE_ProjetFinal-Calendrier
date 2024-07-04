@@ -10,16 +10,20 @@
         (nombre de points :
         <span th:text="${pointNumber}"></span>
         )</h1>
-    <form>
+
+    <!-- Afficher le message de feedback -->
+    <div th:if="${message}" th:text="${message}" class="message"></div>
+
+    <form action="/upload-gif" method="post" enctype="multipart/form-data">
         <div class="file-field">
             <label>Fichier à téléverser</label>
-            <input type="file">
+            <input type="file" name="file">
         </div>
 
-        <div class="legend-field">
+        <!--div class="legend-field">
             <label>Légende</label>
             <input type="text">
-        </div>
+        </div>-->
 
         <button type="submit">Placer</button>
     </form>
