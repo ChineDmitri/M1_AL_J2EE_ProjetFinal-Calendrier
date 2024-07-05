@@ -30,7 +30,7 @@ public class UploadController extends AbstractController {
 
         mav.addAttribute("day", day);
 
-        return super.setTheme(UPLOAD_GIF);
+        return super.getTheme(UPLOAD_GIF);
     }
 
     @PostMapping("/upload-gif/day/{idDay}")
@@ -69,6 +69,6 @@ public class UploadController extends AbstractController {
         mav.addAttribute("day", day);
         mav.addAttribute("message", message);
 
-        return super.setTheme(UPLOAD_GIF);
+        return super.getTheme(UPLOAD_GIF);
     }
 }

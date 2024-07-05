@@ -16,11 +16,11 @@ public class Reaction {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "emoji_id", nullable = false)
     private Emoji emoji;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_customer_id", nullable = false)
     private UserCustomer userCustomer;
 

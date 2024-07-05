@@ -5,7 +5,7 @@ import com.esgi.calendar.dto.res.GifOfDayDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = ReactionMapper.class)
+@Mapper(componentModel = "spring", uses = ReactionUserMapper.class)
 public interface GifOfDayMapper {
 
     @Mapping(target = "userOwnerFirstName", source = "userOwner.firstName")

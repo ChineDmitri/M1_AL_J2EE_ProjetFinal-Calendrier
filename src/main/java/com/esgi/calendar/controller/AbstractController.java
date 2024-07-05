@@ -15,7 +15,7 @@ public abstract class AbstractController {
         return null;
     }
 
-    protected String setTheme(String templateName) {
+    protected String getTheme(String templateName) {
         if (this.getUserDetails()
                 .getTheme()
                 .getName()

@@ -3,27 +3,26 @@ package com.esgi.calendar.mapper;
 import com.esgi.calendar.business.Emoji;
 import com.esgi.calendar.business.Reaction;
 import com.esgi.calendar.business.UserCustomer;
-import com.esgi.calendar.dto.res.ReactionDto;
+import com.esgi.calendar.dto.res.ReactionUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(MockitoExtension.class)
-public class ReactionMapperTest {
+public class ReactionUserMapperTest {
 
-    private Reaction       reaction;
-    private ReactionDto    reactionDto;
-    private ReactionMapper reactionMapper;
+    private Reaction           reaction;
+    private ReactionUserDto    reactionUserDto;
+    private ReactionUserMapper reactionUserMapper;
 
     @BeforeEach
     public void setUp() {
-        reactionMapper = Mappers.getMapper(ReactionMapper.class);
+        reactionUserMapper = Mappers.getMapper(ReactionUserMapper.class);
 
         reaction = new Reaction();
         reaction.setId(1L);
@@ -44,18 +43,18 @@ public class ReactionMapperTest {
     @Test
     public void testEntity_ToDto() {
         // Given
-        this.reactionDto = reactionMapper.toDto(this.reaction);
+        this.reactionUserDto = reactionUserMapper.toDto(this.reaction);
 
-        System.out.println(this.reactionDto);
+        System.out.println(this.reactionUserDto);
 
         // Then
-        assertEquals(this.reaction.getId(), reactionDto.getId());
+        assertEquals(this.reaction.getId(), reactionUserDto.getId());
         assertEquals(this.reaction.getUserCustomer()
-                                  .getFirstName(), reactionDto.getUserFirstName());
+                                  .getFirstName(), reactionUserDto.getUserFirstName());
         assertEquals(this.reaction.getUserCustomer()
-                                  .getLastName(), reactionDto.getUserLastName());
+                                  .getLastName(), reactionUserDto.getUserLastName());
         assertEquals(this.reaction.getEmoji()
-                                  .getUnicode(), reactionDto.getEmojiUnicode());
+                                  .getUnicode(), reactionUserDto.getEmojiUnicode());
     }
 
 }
