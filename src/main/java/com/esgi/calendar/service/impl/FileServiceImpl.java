@@ -26,7 +26,7 @@ public class FileServiceImpl implements IFileService {
         return contentType != null && contentType.equals("image/gif");
     }
 
-    public void saveFile(
+    public GifOfDay saveFile(
             MultipartFile file,
             //LocalDate date,
             String legende,
@@ -51,5 +51,7 @@ public class FileServiceImpl implements IFileService {
                 .build();
 
         gifOfDayRepository.save(gifOfDay);
+
+        return gifOfDay;
     }
 }

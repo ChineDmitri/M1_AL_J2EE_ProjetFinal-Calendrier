@@ -1,13 +1,12 @@
 package com.esgi.calendar.controller;
 
-import com.esgi.calendar.business.UserCustomer;
+import com.esgi.calendar.business.GifOfDay;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
+import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.service.ICalendarService;
 import com.esgi.calendar.service.impl.FileServiceImpl;
 import com.esgi.calendar.service.impl.UserCustomerServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 
 @Controller
 @AllArgsConstructor
-public class UploadController {
+public class UploadController extends AbstractController {
 
     private final FileServiceImpl fileService;
     private final UserCustomerServiceImpl userCustomerService;
@@ -41,14 +40,29 @@ public class UploadController {
     }
 
     @PostMapping("/upload-gif/day/{idDay}")
-    public ModelAndView handleFileUpload(@PathVariable int idDay, MultipartFile file, String legend){
+    public ModelAndView handleFileUpload(
+            @PathVariable int idDay,
+            GifOfDayDto dto,
+            MultipartFile file,
+            String legend
+    ){
         ModelAndView mav = new ModelAndView("upload-gif");
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
         String message;
 
         if(fileService.isGif(file)) {
             try {
-                fileService.saveFile(file, legend, _getCurrentUser());
+                GifOfDay savedGifOfDay = fileService.saveFile(file, legend, super.getUserDetails().getUserCustomer());
+
+                dto.setUrl(savedGifOfDay.getUrl());
+                dto.setLegende(savedGifOfDay.getLegende());
+
+                this.calendarService.addGifForDay(
+                        dto,
+                        super.getUserDetails()
+                             .getUserCustomer(),
+                        idDay
+                );
                 message = "Fichier téléversé avec succès!";
             } catch (IOException ex) {
                 message = "Une erreur est survenue lors du téléversement du fichier : " + ex.getMessage();
@@ -62,17 +76,5 @@ public class UploadController {
         mav.addObject("message", message);
 
         return mav;
-    }
-
-    private UserCustomer _getCurrentUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email;
-        if(principal instanceof UserDetails) {
-            email = ((UserDetails) principal).getUsername();
-        } else {
-            email = principal.toString();
-        }
-
-        return userCustomerService.recupererUserCustomerParMail(email);
     }
 }
