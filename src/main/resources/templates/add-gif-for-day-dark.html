@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #454545;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Placer un gif distant sur le [[${day.date}]]</h1>
+    <h2>(nombre de points : [[${day.costGif}]])</h2>
+    <form action="#" th:action="@{/weekly-calendar/add-gif/day/{id}(id=${day.id})}" method="post">
+        <label for="url">URL du GIF :</label>
+        <input type="text" id="url" name="url" th:value="${day.gifOfDay?.url}"/>
+        <br/>
+        <label for="legend">Légende :</label>
+        <input type="text" id="legend" name="legend" th:value="${day.gifOfDay?.title}"/>
+        <br/>
+        <button type="submit" class="btn btn-primary">Placer</button>
+    </form>
+</div>
+</body>
+</html>

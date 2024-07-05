@@ -1,5 +1,6 @@
 package com.esgi.calendar.service.impl;
 
+import com.esgi.calendar.business.CustomUserDetails;
 import com.esgi.calendar.business.Theme;
 import com.esgi.calendar.business.UserCustomer;
 import com.esgi.calendar.dto.req.RegistrationFormDto;
@@ -9,14 +10,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -41,32 +38,42 @@ public class AuthServiceImpl implements IUserService {
     public Authentication authenticate(Authentication authentication) throws
                                                                       AuthenticationException {
         String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
+        String password = authentication.getCredentials()
+                                        .toString();
         if (username.trim()
-                 .isEmpty()) {
+                    .isEmpty()) {
             throw new UsernameNotFoundException(
-                    "Le email d'utilisateur ne peut pas être vide");
+                    "Le email d'utilisateurDetails ne peut pas être vide");
         }
 
-        UserCustomer utilisateur = userRepository.findByEmailIgnoreCase(username);
+        CustomUserDetails utilisateurDetails = (CustomUserDetails) loadUserByUsername(
+                username);
 
-        if (utilisateur == null) {
-            throw new UsernameNotFoundException("Utilisateur " + username + " introuvable");
-        }
-        List<GrantedAuthority> grantedAuthorities = getGrantedAuthorities(utilisateur);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                utilisateurDetails,
+                password,
+                utilisateurDetails.getAuthorities());
 
-        return new UsernamePasswordAuthenticationToken(username, password,
-                                                       grantedAuthorities);
-    }
-
-    private List<GrantedAuthority> getGrantedAuthorities(UserCustomer utilisateur) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return authorities;
+        return token;
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return true;
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws
+                                                           UsernameNotFoundException {
+        UserCustomer user = userRepository.findByEmailIgnoreCase(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        CustomUserDetails userDetails = new CustomUserDetails(user,
+                                                              user.getTotalPoints());
+
+        return userDetails;
+    }
+
 }

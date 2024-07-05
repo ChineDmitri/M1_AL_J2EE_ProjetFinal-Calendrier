@@ -1,13 +1,7 @@
 package com.esgi.calendar.init;
 
-import com.esgi.calendar.business.DayOfActualMonth;
-import com.esgi.calendar.business.Emoji;
-import com.esgi.calendar.business.Theme;
-import com.esgi.calendar.business.UserCustomer;
-import com.esgi.calendar.repository.DayRepository;
-import com.esgi.calendar.repository.EmojiRepository;
-import com.esgi.calendar.repository.ThemeRepository;
-import com.esgi.calendar.repository.UserRepository;
+import com.esgi.calendar.business.*;
+import com.esgi.calendar.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -19,15 +13,18 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Component
 @AllArgsConstructor
 public class InitialDataSetup {
-    private ThemeRepository themeRepository;
-    private DayRepository   dayRepository;
-    private EmojiRepository emojiRepository;
-    private UserRepository  userRepository;
+    private ThemeRepository    themeRepository;
+    private DayRepository      dayRepository;
+    private EmojiRepository    emojiRepository;
+    private UserRepository     userRepository;
+    private GifOfDayRepository gifRepository;
+    private ReactionRepository reactionRepository;
 
     private PasswordEncoder passwordEncoder;
 
@@ -85,5 +82,25 @@ public class InitialDataSetup {
                                                          .build()
         );
         this.emojiRepository.saveAll(emotions);
+
+        GifOfDay gif = new GifOfDay().builder()
+                                     .url("https://c.tenor.com/sesbpnZ42swAAAAC/tenor.gif")
+                                     .title("We're in the good place")
+                                     .userOwner(userTest)
+                                     .build();
+        gifRepository.save(gif);
+
+        // Ajout d'une réaction
+        Reaction reaction = new Reaction().builder()
+                                          .userCustomer(userTest)
+                                          .gifOfDay(gif)
+                                          .emoji(emotions.get(0))
+                                          .build();
+        reactionRepository.save(reaction);
+
+        Optional<DayOfActualMonth> day1 = this.dayRepository.findById(1L);
+        day1.get()
+            .setGifOfDay(gif);
+        this.dayRepository.save(day1.get());
     }
 }

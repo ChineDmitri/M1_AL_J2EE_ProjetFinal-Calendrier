@@ -37,6 +37,7 @@ public class ReactionMapperTest {
                 "password",
                 null
         );
+        reaction.setUserCustomer(user);
 
     }
 
