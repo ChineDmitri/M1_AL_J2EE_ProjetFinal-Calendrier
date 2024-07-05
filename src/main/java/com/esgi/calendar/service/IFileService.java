@@ -8,5 +8,5 @@ import java.io.IOException;
 
 public interface IFileService {
     boolean isGif(MultipartFile file);
-    GifOfDay saveFile(MultipartFile file, /*LocalDate date, */String legende, UserCustomer userOwner) throws IOException;
+    void saveFile(MultipartFile file) throws IOException;
 }

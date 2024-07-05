@@ -46,10 +46,10 @@ public class UploadController extends AbstractController {
 
         if(fileService.isGif(file)) {
             try {
-                GifOfDay savedGifOfDay = fileService.saveFile(file, legend, super.getUserDetails().getUserCustomer());
+                fileService.saveFile(file);
 
-                dto.setUrl(savedGifOfDay.getUrl());
-                dto.setLegende(savedGifOfDay.getLegende());
+                dto.setUrl("/" + file.getOriginalFilename());
+                dto.setLegende(legend);
 
                 this.calendarService.addGifForDay(
                         dto,
