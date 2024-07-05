@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Téléverser un GIF</title>
@@ -12,7 +12,14 @@
         )</h1>
 
     <!-- Afficher le message de feedback -->
-    <div th:if="${message}" th:text="${message}" class="message"></div>
+    <div th:if="${message}">
+        <span th:text="${message}" class="message"></span>
+        <button th:data-href="@{/weekly-calendar/0}"
+                onclick="location.href=this.dataset.href"
+                class="btn btn-secondary">
+            Retourner sur la page Calendrier
+        </button>
+    </div>
 
     <form action="/upload-gif" method="post" enctype="multipart/form-data">
         <div class="file-field">

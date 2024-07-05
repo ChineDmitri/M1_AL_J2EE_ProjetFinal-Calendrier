@@ -46,7 +46,7 @@ public class FileServiceImpl implements IFileService {
         // On enregistre dans la base de données
         GifOfDay gifOfDay = GifOfDay.builder()
                 .url(path.toString())
-                .user(userOwner)
+                .userOwner(userOwner)
                 .legende(legende)
                 .build();
 

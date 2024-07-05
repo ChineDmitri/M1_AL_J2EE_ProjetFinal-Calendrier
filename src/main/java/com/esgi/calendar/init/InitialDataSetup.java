@@ -85,7 +85,7 @@ public class InitialDataSetup {
 
         GifOfDay gif = new GifOfDay().builder()
                                      .url("https://c.tenor.com/sesbpnZ42swAAAAC/tenor.gif")
-                                     .title("We're in the good place")
+                                     .legende("We're in the good place")
                                      .userOwner(userTest)
                                      .build();
         gifRepository.save(gif);

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Weekly Calendar</title>
+    <title>Calendrier hebdomadaire</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         body {
@@ -43,6 +43,7 @@
                 <span th:if="${day.gifOfDay == null}">
                   <span th:text="${day.costGif} + ' points'"></span>
                   <a th:href="@{/weekly-calendar/add-gif/day/{idDat}(idDat=${day.id})}">Placer un gif distant</a>
+                  <a th:href="@{/upload-gif}">Téléverser un gif</a>
                 </span>
             </td>
             <td>

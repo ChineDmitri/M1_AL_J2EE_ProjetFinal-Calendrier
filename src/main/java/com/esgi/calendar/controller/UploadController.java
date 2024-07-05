@@ -45,7 +45,7 @@ public class UploadController {
                 fileService.saveFile(file, legend, _getCurrentUser());
                 message = "Fichier téléversé avec succès!";
             } catch (IOException ex) {
-                message = "Erreur lors du téléversement du fichier.";
+                message = "Une erreur est survenue lors du téléversement du fichier : " + ex.getMessage();
                 ex.printStackTrace();
             }
         } else {
