@@ -1,5 +1,6 @@
 package com.esgi.calendar.service.impl;
 
+import com.esgi.calendar.service.IFileService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class FileService {
+public class FileServiceImpl implements IFileService {
     private static final String FILE_DIR = "src/main/resources/static/";
 
     public boolean isGif(MultipartFile file) {

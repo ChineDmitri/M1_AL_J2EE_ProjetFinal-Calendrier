@@ -1,6 +1,6 @@
 package com.esgi.calendar.controller;
 
-import com.esgi.calendar.service.impl.FileService;
+import com.esgi.calendar.service.impl.FileServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class UploadController {
 
-    private final FileService fileService;
+    private final FileServiceImpl fileService;
 
     @GetMapping("/upload-gif")
     public ModelAndView uploadGif(){
