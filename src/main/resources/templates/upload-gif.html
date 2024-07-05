@@ -1,31 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Téléverser un GIF</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Placer un gif distant sur le
-        <span th:text="${currentDate}"></span>
-        (nombre de points :
-        <span th:text="${pointNumber}"></span>
-        )</h1>
+    <div class="container">
+        <h1>Placer un gif distant sur le [[${day.date}]]</h1>
+        <h2>(nombre de points : [[${day.costGif}]]</h2>
 
-    <!-- Afficher le message de feedback -->
-    <div th:if="${message}" th:text="${message}" class="message"></div>
+        <form action="#" th:action="@{/upload-gif/day/{id}(id=${day.id})}" method="post" enctype="multipart/form-data">
+            <div class="file-field">
+                <label>Fichier à téléverser</label>
+                <input type="file" name="file">
+            </div>
+            <div class="legend-field">
+                <label>Légende</label>
+                <input type="text" name="legend">
+            </div>
+            <button type="submit">Placer</button>
+        </form>
 
-    <form action="/upload-gif" method="post" enctype="multipart/form-data">
-        <div class="file-field">
-            <label>Fichier à téléverser</label>
-            <input type="file" name="file">
+        <!-- Afficher le message de feedback -->
+        <div th:if="${message}">
+            <span th:text="${message}" class="message"></span>
+            <button th:data-href="@{/weekly-calendar/0}"
+                    onclick="location.href=this.dataset.href"
+                    class="btn btn-secondary">
+                Retourner sur la page Calendrier
+            </button>
         </div>
-
-        <div class="legend-field">
-            <label>Légende</label>
-            <input type="text" name="legend">
-        </div>
-
-        <button type="submit">Placer</button>
-    </form>
+    </div>
 </body>
 </html>

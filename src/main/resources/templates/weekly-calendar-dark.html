@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Weekly Calendar</title>
+    <title>Calendrier hebdomadaire</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         body {
@@ -37,18 +37,26 @@
             <th>Réaction(s)</th>
         </tr>
         <tr th:each="day : ${weekData}">
+            <!-- Colonne Jour -->
             <td th:text="${day.date}"></td>
+
+            <!-- Colonne Gif -->
             <td>
                 <img th:if="${day.gifOfDay != null}" th:src="|${day.gifOfDay.url}|" alt="Gif" class="img-fluid"/>
                 <span th:if="${day.gifOfDay == null}">
                   <span th:text="${day.costGif} + ' points'"></span>
                   <a th:href="@{/weekly-calendar/add-gif/day/{idDat}(idDat=${day.id})}">Placer un gif distant</a>
+                  <a th:href="@{/upload-gif/day/{idDat}(idDat=${day.id})}">Téléverser un gif</a>
                 </span>
             </td>
+
+            <!-- Colonne Utilisateur -->
             <td>
                 <span th:if="${day.gifOfDay!= null}" th:text="${day.gifOfDay.userOwnerFirstName}"
                       class="font-weight-bold"></span>
             </td>
+
+            <!-- Colonne Réaction(s) -->
             <td>
                 <ul th:if="${day.gifOfDay!= null}" class="list-unstyled">
                     <li th:each="reaction : ${day.gifOfDay.reactions}">

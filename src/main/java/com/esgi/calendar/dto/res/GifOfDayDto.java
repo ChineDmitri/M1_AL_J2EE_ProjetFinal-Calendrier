@@ -20,7 +20,8 @@ public class GifOfDayDto {
 
     private String url;
 
-    private String title;
+    private String legende;
+
 
     @JsonIgnore
     private String userOwnerFirstName;
