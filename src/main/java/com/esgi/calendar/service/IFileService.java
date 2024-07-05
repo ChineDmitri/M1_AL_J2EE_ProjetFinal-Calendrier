@@ -1,10 +1,11 @@
 package com.esgi.calendar.service;
 
+import com.esgi.calendar.business.UserCustomer;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 public interface IFileService {
-    public boolean isGif(MultipartFile file);
-    public void saveFile(MultipartFile file) throws IOException;
+    boolean isGif(MultipartFile file);
+    void saveFile(MultipartFile file, /*LocalDate date, String title*/UserCustomer userOwner) throws IOException;
 }

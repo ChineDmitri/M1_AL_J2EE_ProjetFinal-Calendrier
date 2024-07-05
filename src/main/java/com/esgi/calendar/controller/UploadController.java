@@ -1,7 +1,11 @@
 package com.esgi.calendar.controller;
 
+import com.esgi.calendar.business.UserCustomer;
 import com.esgi.calendar.service.impl.FileServiceImpl;
+import com.esgi.calendar.service.impl.UserCustomerServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 public class UploadController {
 
     private final FileServiceImpl fileService;
+    private final UserCustomerServiceImpl userCustomerService;
 
     @GetMapping("/upload-gif")
     public ModelAndView uploadGif(){
@@ -32,10 +37,12 @@ public class UploadController {
     public ModelAndView handleFileUpload(MultipartFile file){
         ModelAndView mav = new ModelAndView("upload-gif");
         String message;
+        String currentDate = _getCurrentDate();
 
         if(fileService.isGif(file)) {
+
             try {
-                fileService.saveFile(file);
+                fileService.saveFile(file, _getCurrentUser());
                 message = "Fichier téléversé avec succès!";
             } catch (IOException ex) {
                 message = "Erreur lors du téléversement du fichier.";
@@ -45,11 +52,23 @@ public class UploadController {
             message = "Le fichier n'est pas un GIF valide.";
         }
 
-        mav.addObject("currentDate", _getCurrentDate());
+        mav.addObject("currentDate", currentDate);
         mav.addObject("currentPoints", _getCurrentUserPoints());
         mav.addObject("message", message);
 
         return mav;
+    }
+
+    private UserCustomer _getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email;
+        if(principal instanceof UserDetails) {
+            email = ((UserDetails) principal).getUsername();
+        } else {
+            email = principal.toString();
+        }
+
+        return userCustomerService.recupererUserCustomerParMail(email);
     }
 
     private String _getCurrentDate() {
