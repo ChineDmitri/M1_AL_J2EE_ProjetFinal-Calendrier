@@ -37,7 +37,7 @@
                 <span th:if="${day.gifOfDay == null}">
                   <span th:text="${day.costGif} + ' points'"></span>
                   <a th:href="@{/weekly-calendar/add-gif/day/{idDat}(idDat=${day.id})}">Placer un gif distant</a>
-                  <a th:href="@{/upload-gif}">Téléverser un gif</a>
+                  <a th:href="@{/upload-gif/day/{idDat}(idDat=${day.id})}">Téléverser un gif</a>
                 </span>
             </td>
             <td>
