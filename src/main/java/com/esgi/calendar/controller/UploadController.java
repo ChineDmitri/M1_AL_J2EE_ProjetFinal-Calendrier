@@ -5,7 +5,6 @@ import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.service.ICalendarService;
 import com.esgi.calendar.service.impl.FileServiceImpl;
-import com.esgi.calendar.service.impl.UserCustomerServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import java.io.IOException;
 public class UploadController extends AbstractController {
 
     private final FileServiceImpl fileService;
-    private final UserCustomerServiceImpl userCustomerService;
     private final ICalendarService calendarService;
 
     private static final String UPLOAD_GIF = "upload-gif";
