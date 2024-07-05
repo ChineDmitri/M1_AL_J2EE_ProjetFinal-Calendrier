@@ -7,5 +7,5 @@ import java.io.IOException;
 
 public interface IFileService {
     boolean isGif(MultipartFile file);
-    void saveFile(MultipartFile file, /*LocalDate date, String title*/UserCustomer userOwner) throws IOException;
+    void saveFile(MultipartFile file, /*LocalDate date, */String legende, UserCustomer userOwner) throws IOException;
 }

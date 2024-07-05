@@ -22,6 +22,9 @@ public class GifOfDay {
     @Column(name = "url", nullable = false)
     private String url;
 
+    @Column(name = "legende")
+    private String legende;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserCustomer user;

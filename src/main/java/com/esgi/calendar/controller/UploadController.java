@@ -34,7 +34,7 @@ public class UploadController {
     }
 
     @PostMapping("upload-gif")
-    public ModelAndView handleFileUpload(MultipartFile file){
+    public ModelAndView handleFileUpload(MultipartFile file, String legend){
         ModelAndView mav = new ModelAndView("upload-gif");
         String message;
         String currentDate = _getCurrentDate();
@@ -42,7 +42,7 @@ public class UploadController {
         if(fileService.isGif(file)) {
 
             try {
-                fileService.saveFile(file, _getCurrentUser());
+                fileService.saveFile(file, legend, _getCurrentUser());
                 message = "Fichier téléversé avec succès!";
             } catch (IOException ex) {
                 message = "Erreur lors du téléversement du fichier.";

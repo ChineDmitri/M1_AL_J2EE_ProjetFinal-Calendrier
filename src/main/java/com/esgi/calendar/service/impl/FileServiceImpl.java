@@ -29,7 +29,7 @@ public class FileServiceImpl implements IFileService {
     public void saveFile(
             MultipartFile file,
             //LocalDate date,
-            //String title,
+            String legende,
             UserCustomer userOwner
     ) throws IOException {
         // On vérifie si le fichier cible existe avant toute opération d'écriture !
@@ -47,6 +47,7 @@ public class FileServiceImpl implements IFileService {
         GifOfDay gifOfDay = GifOfDay.builder()
                 .url(path.toString())
                 .user(userOwner)
+                .legende(legende)
                 .build();
 
         gifOfDayRepository.save(gifOfDay);
