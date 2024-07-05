@@ -2,32 +2,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <title>Se créer un compte</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Création de compte</h1>
-<form action="/signup" method="post">
-    <label for="firstName">Prénom:</label>
-    <input type="text" id="firstName" name="firstName" required/>
-    <br/>
-    <label for="lastName">Nom:</label>
-    <input type="text" id="lastName" name="lastName" required/>
-    <br/>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required/>
-    <br/>
-    <label for="password">Mot de passe:</label>
-    <input type="password" id="password" name="password" required/>
-    <br/>
-    <label for="theme">Thème:</label>
-    <select id="theme" name="theme">
-        <option value="">Veuillez choisir un thème</option>
-        <th:block th:each="theme : ${themes}">
-            <option th:value="${theme.id}" th:text="${theme.name}"></option>
-        </th:block>
-    </select>
-    <br/>
-    <input type="submit" value="Enregistrer"/>
-</form>
-<p>Vous avez déjà votre compte ? <a th:href="@{/login}">Acceder à la page de connexion</a></p>
+    <div class="container">
+        <h1>Création de compte</h1>
+        <form action="/signup" method="post">
+            <label for="firstName">Prénom:</label>
+            <input type="text" id="firstName" name="firstName" required/>
+            <br/>
+            <label for="lastName">Nom:</label>
+            <input type="text" id="lastName" name="lastName" required/>
+            <br/>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required/>
+            <br/>
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" required/>
+            <br/>
+            <label for="theme">Thème:</label>
+            <select id="theme" name="theme">
+                <option value="">Veuillez choisir un thème</option>
+                <th:block th:each="theme : ${themes}">
+                    <option th:value="${theme.id}" th:text="${theme.name}"></option>
+                </th:block>
+            </select>
+            <br/>
+            <input type="submit" value="S'inscrire" class="btn btn-primary"/>
+        </form>
+        <p>Vous avez déjà votre compte ? <a th:href="@{/login}">Se connecter</a></p>
+    </div>
 </body>
 </html>
