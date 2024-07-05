@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Controller
 @AllArgsConstructor
@@ -26,27 +24,25 @@ public class UploadController extends AbstractController {
     private final UserCustomerServiceImpl userCustomerService;
     private final ICalendarService calendarService;
 
-    private static final String WEEKLY_CALENDAR = "weekly-calendar";
+    private static final String UPLOAD_GIF = "upload-gif";
 
     @GetMapping("/upload-gif/day/{idDay}")
-    public ModelAndView uploadGif(@PathVariable int idDay){
-        ModelAndView mav = new ModelAndView("upload-gif");
-
+    public String uploadGif(@PathVariable int idDay, Model mav){
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
 
-        mav.addObject("day", day);
+        mav.addAttribute("day", day);
 
-        return mav;
+        return super.setTheme(UPLOAD_GIF);
     }
 
     @PostMapping("/upload-gif/day/{idDay}")
-    public ModelAndView handleFileUpload(
+    public String handleFileUpload(
             @PathVariable int idDay,
             GifOfDayDto dto,
+            Model mav,
             MultipartFile file,
             String legend
     ){
-        ModelAndView mav = new ModelAndView("upload-gif");
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
         String message;
 
@@ -72,9 +68,9 @@ public class UploadController extends AbstractController {
             message = "Le fichier n'est pas un GIF valide.";
         }
 
-        mav.addObject("day", day);
-        mav.addObject("message", message);
+        mav.addAttribute("day", day);
+        mav.addAttribute("message", message);
 
-        return mav;
+        return super.setTheme(UPLOAD_GIF);
     }
 }
