@@ -60,13 +60,9 @@
             <td>
                 <ul th:if="${day.gifOfDay!= null}" class="list-unstyled">
                     <li th:each="reaction : ${day.gifOfDay.reactions}">
-                        <!--                        <span th:text="${reaction.userFirstName} + ' + ${reaction.userLastName} + ' ${reaction.emojiUnicode}" class="text-secondary"></span>-->
                         <span th:text="${'[' + reaction.userFirstName + ' ' + reaction.userLastName + '] ' + reaction.emojiUnicode}"></span>
-                        <!--                        <span th:text="|{0} {1} {2}|"-->
-                        <!--                              th:with="reaction.userFirstName + ' ' + reaction.userLastName + ' ' + reaction.emojiUnicode"-->
-                        <!--                              class="text-secondary"></span>-->
-                    </li>
                 </ul>
+                <a th:href="@{/weekly-calendar/add-emoji/day/{idDay}(idDay=${day.id})}">Réagir</a>
                 <span th:unless="${day.gifOfDay!= null}" class="text-muted"></span>
             </td>
         </tr>

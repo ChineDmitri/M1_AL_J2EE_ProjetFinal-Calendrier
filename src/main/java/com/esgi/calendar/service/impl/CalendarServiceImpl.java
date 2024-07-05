@@ -1,14 +1,14 @@
 package com.esgi.calendar.service.impl;
 
-import com.esgi.calendar.business.DayOfActualMonth;
-import com.esgi.calendar.business.GifOfDay;
-import com.esgi.calendar.business.UserCustomer;
+import com.esgi.calendar.business.*;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.mapper.DayOfActualMonthMapper;
 import com.esgi.calendar.mapper.GifOfDayMapper;
 import com.esgi.calendar.repository.DayOfActualMonthRepository;
+import com.esgi.calendar.repository.EmojiRepository;
 import com.esgi.calendar.repository.GifOfDayRepository;
+import com.esgi.calendar.repository.ReactionRepository;
 import com.esgi.calendar.service.ICalendarService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,8 @@ public class CalendarServiceImpl implements ICalendarService {
 
     private final DayOfActualMonthRepository dayOfActualMonthRepository;
     private final GifOfDayRepository         gifOfDayRepository;
+    private final EmojiRepository            emojiRepository;
+    private final ReactionRepository         reactionRepository;
 
     private final DayOfActualMonthMapper dayOfActualMapper;
     private final GifOfDayMapper         gifOfDayMapper;
@@ -56,9 +58,9 @@ public class CalendarServiceImpl implements ICalendarService {
     }
 
     @Override
-    public int addGifForDay(GifOfDayDto dto,
-                            UserCustomer user,
-                            int idDay) {
+    public DayOfActualMonthDto addGifForDay(GifOfDayDto dto,
+                                            UserCustomer user,
+                                            int idDay) {
         GifOfDay gif = this.gifOfDayMapper.toEntity(dto);
         gif.setUserOwner(user);
         gif = this.gifOfDayRepository.save(gif);
@@ -69,10 +71,35 @@ public class CalendarServiceImpl implements ICalendarService {
         if (day != null) {
             day.setGifOfDay(gif);
             this.dayOfActualMonthRepository.save(day);
-            return (idDay - 1) == 0 ? 0 : (idDay - 1) / 7;
+            return this.dayOfActualMapper.toDto(day);
         }
 
-        return 0;
+        return null;
+    }
+
+    @Override
+    public GifOfDayDto addReactionForDayWithGif(int idDay,
+                                                Long idGif,
+                                                UserCustomer user) {
+        Emoji emoji = this.emojiRepository.findById(idGif)
+                                          .orElse(null);
+
+        Reaction reaction = new Reaction();
+        reaction.setUserCustomer(user);
+        reaction.setEmoji(emoji);
+        this.reactionRepository.save(reaction);
+
+        GifOfDay gif = this.gifOfDayRepository.findById(Long.valueOf(idDay))
+                                              .orElse(null);
+
+        if (gif != null) {
+            reaction.setGifOfDay(gif);
+            gif.getReactions().add(reaction);
+            this.gifOfDayRepository.save(gif);
+            return this.gifOfDayMapper.toDto(gif);
+        }
+
+        return null;
     }
 
 }

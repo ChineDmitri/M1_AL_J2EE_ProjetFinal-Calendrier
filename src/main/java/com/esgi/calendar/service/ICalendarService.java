@@ -14,6 +14,7 @@ public interface ICalendarService {
 
     public DayOfActualMonthDto getDayOfActualMonth(int idDay);
 
-    public int addGifForDay(GifOfDayDto dto, UserCustomer user, int idDay);
+    public DayOfActualMonthDto addGifForDay(GifOfDayDto dto, UserCustomer user, int idDay);
 
+    public GifOfDayDto addReactionForDayWithGif(int idDay, Long idGif, UserCustomer user);
 }

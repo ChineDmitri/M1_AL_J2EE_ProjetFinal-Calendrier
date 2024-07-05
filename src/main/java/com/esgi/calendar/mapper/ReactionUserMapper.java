@@ -1,12 +1,12 @@
 package com.esgi.calendar.mapper;
 
 import com.esgi.calendar.business.Reaction;
-import com.esgi.calendar.dto.res.ReactionDto;
+import com.esgi.calendar.dto.res.ReactionUserDto;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
-public interface ReactionMapper {
-    Reaction toEntity(ReactionDto reactionDto);
+public interface ReactionUserMapper {
+    Reaction toEntity(ReactionUserDto reactionUserDto);
 
     @Mappings(
             {
@@ -16,5 +16,5 @@ public interface ReactionMapper {
                     @Mapping(target = "userFirstName", source = "userCustomer.firstName")
             }
     )
-    ReactionDto toDto(Reaction reaction);
+    ReactionUserDto toDto(Reaction reaction);
 }

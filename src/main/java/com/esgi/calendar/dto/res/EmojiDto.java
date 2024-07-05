@@ -1,34 +1,29 @@
 package com.esgi.calendar.dto.res;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mapstruct.Mapping;
 
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class GifOfDayDto {
+public class EmojiDto {
 
-    @JsonIgnore
     private Long id;
 
-    private String url;
-
-    private String legende;
-
+    @JsonIgnore
+    private String name;
 
     @JsonIgnore
-    private String userOwnerFirstName;
-
-    @JsonIgnore
-    private String userOwnerLastName;
-
-    @JsonIgnore
-    private List<ReactionUserDto> reactions;
+    private String unicode;
 
 }

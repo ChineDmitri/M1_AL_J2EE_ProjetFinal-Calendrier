@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container text-center">
+    <h1 class="mb-4">Réagir au gif de [[${day.gifOfDay.userOwnerFirstName}]]</h1>
+    <img th:if="${day.gifOfDay != null}" th:src="|${day.gifOfDay.url}|" alt="Gif" class="img-fluid mb-4"/>
+    <br>
+    <form action="#" th:action="@{/weekly-calendar/add-emoji/day/{id}(id=${day.id})}" method="post"
+          class="col-lg-6 offset-lg-3">
+        <div class="form-group">
+            <select id="reaction" name="reaction" class="form-control">
+                <th:block th:each="emoji : ${emojis}">
+                    <option th:value="${emoji.id}" th:text="${emoji.name + ' ' + emoji.unicode}"></option>
+                </th:block>
+            </select>
+            <span class="input-group-btn">
+          <button type="submit" class="btn btn-primary">Réagir</button>
+        </span>
+        </div>
+    </form>
+</div>
+</body>
+</html>
