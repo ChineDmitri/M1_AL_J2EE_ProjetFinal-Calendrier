@@ -3,7 +3,9 @@ package com.esgi.calendar.business;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,11 +29,11 @@ public class GifOfDay {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserCustomer user;
+    private UserCustomer userOwner;
 
     @OneToOne(mappedBy = "gifOfDay")
     private DayOfActualMonth dayOfActualMonth;
 
     @OneToMany(mappedBy = "gifOfDay", cascade = CascadeType.ALL)
-    private Set<Reaction> reactions = new HashSet<>();
+    private List<Reaction> reactions = new ArrayList<>();
 }

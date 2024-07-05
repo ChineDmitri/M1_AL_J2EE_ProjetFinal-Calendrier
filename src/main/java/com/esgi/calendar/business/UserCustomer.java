@@ -13,16 +13,18 @@ public class UserCustomer {
 
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String firstName;
+    private String firstName;
 
-    String lastName;
+    private String lastName;
+
+    private int totalPoints;
 
     @Column(unique = true)
-    String email;
+    private String email;
 
-    String password;
+    private String password;
 
     @ManyToOne()
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
