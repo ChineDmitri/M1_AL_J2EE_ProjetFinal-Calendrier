@@ -13,16 +13,23 @@
 </head>
 <body>
 <div class="container">
-    <h1>Téléverser un gif sur le [[${day.date}]]</h1>
-    <h2>(nombre de points : [[${day.costGif}]]</h2>
+
+    <button th:data-href="@{/weekly-calendar/0}"
+            onclick="location.href=this.dataset.href"
+            class="btn btn-secondary">
+        Retourner sur la page Calendrier
+    </button>
+
+    <h1>Placer un gif distant sur le [[${day.date}]]</h1>
+    <h2>(nombre de points : [[${day.costGif}]])</h2>
 
     <form action="#" th:action="@{/upload-gif/day/{id}(id=${day.id})}" method="post" enctype="multipart/form-data">
         <div class="file-field">
-            <label>Fichier à téléverser</label>
+            <label>Fichier à téléverser : </label>
             <input type="file" name="file">
         </div>
         <div class="legend-field">
-            <label>Légende</label>
+            <label>Légende : </label>
             <input type="text" name="legend">
         </div>
         <button type="submit" class="btn btn-primary">Placer</button>
@@ -30,12 +37,8 @@
 
     <!-- Afficher le message de feedback -->
     <div th:if="${message}">
-        <span th:text="${message}" class="message"></span>
-        <button th:data-href="@{/weekly-calendar/0}"
-                onclick="location.href=this.dataset.href"
-                class="btn btn-secondary">
-            Retourner sur la page Calendrier
-        </button>
+        <span th:if="${success}" th:text="${message}" class="message" style="color: green"></span>
+        <span th:if="${!success}" th:text="${message}" class="message" style="color: indianred"></span>
     </div>
 </div>
 </body>
