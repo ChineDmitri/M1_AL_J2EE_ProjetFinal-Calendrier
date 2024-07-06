@@ -6,33 +6,32 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-        <button th:data-href="@{/weekly-calendar/0}"
-                onclick="location.href=this.dataset.href"
-                class="btn btn-secondary">
-            Retourner sur la page Calendrier
-        </button>
+<div class="container text-center">
+    <div th:replace="fragments/button-back :: button-back"></div>
 
-        <h1>Placer un gif distant sur le [[${day.date}]]</h1>
-        <h2>(nombre de points : [[${day.costGif}]])</h2>
+    <h1>Placer un gif distant sur le [[${day.date}]]</h1>
+    <h2>(nombre de points : [[${day.costGif}]])</h2>
 
-        <form action="#" th:action="@{/upload-gif/day/{id}(id=${day.id})}" method="post" enctype="multipart/form-data">
-            <div class="file-field">
-                <label>Fichier à téléverser : </label>
-                <input type="file" name="file">
-            </div>
-            <div class="legend-field">
-                <label>Légende : </label>
-                <input type="text" name="legend">
-            </div>
-            <button type="submit" class="btn btn-primary">Placer</button>
-        </form>
-
-        <!-- Afficher le message de feedback -->
-        <div th:if="${message}">
-            <span th:if="${success}" th:text="${message}" class="message" style="color: green"></span>
-            <span th:if="${!success}" th:text="${message}" class="message" style="color: darkred"></span>
+    <form action="#"
+          th:action="@{/upload-gif/day/{id}(id=${day.id})}"
+          method="post" enctype="multipart/form-data"
+          class="col-lg-6 offset-lg-3">
+        <div class="form-group">
+            <label>Fichier à téléverser :</label>
+            <input type="file" name="file" class="form-control">
         </div>
+        <div class="form-group">
+            <label>Légende :</label>
+            <input type="text" name="legend" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Placer</button>
+    </form>
+
+    <!-- Afficher le message de feedback -->
+    <div th:if="${message}">
+        <span th:if="${success}" th:text="${message}" class="message" style="color: green"></span>
+        <span th:if="${!success}" th:text="${message}" class="message" style="color: darkred"></span>
     </div>
+</div>
 </body>
 </html>

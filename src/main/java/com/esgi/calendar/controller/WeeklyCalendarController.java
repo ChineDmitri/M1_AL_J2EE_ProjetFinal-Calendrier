@@ -60,7 +60,7 @@ public class WeeklyCalendarController extends AbstractController {
 
         return String.format("redirect:/%s/%s",
                              WEEKLY_CALENDAR,
-                             this.getNumberWeek(idDay));
+                             super.getNumberWeek(idDay));
     }
 
     @GetMapping("/add-emoji/day/{idDay}")
@@ -93,13 +93,13 @@ public class WeeklyCalendarController extends AbstractController {
 
         return String.format("redirect:/%s/%s",
                              WEEKLY_CALENDAR,
-                             this.getNumberWeek(idDay));
+                             super.getNumberWeek(idDay));
     }
 
 
-    private int getNumberWeek(int idDay) {
-        return (idDay - 1) == 0 ? 0 : (idDay - 1) / 7;
-    }
+//    private int getNumberWeek(int idDay) {
+//        return (idDay - 1) == 0 ? 0 : (idDay - 1) / 7;
+//    }
 
 
 }

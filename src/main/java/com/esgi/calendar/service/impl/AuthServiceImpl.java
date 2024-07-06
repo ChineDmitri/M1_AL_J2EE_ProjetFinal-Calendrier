@@ -3,12 +3,19 @@ package com.esgi.calendar.service.impl;
 import com.esgi.calendar.business.CustomUserDetails;
 import com.esgi.calendar.business.Theme;
 import com.esgi.calendar.business.UserCustomer;
+import com.esgi.calendar.controller.ExceptionController;
 import com.esgi.calendar.dto.req.RegistrationFormDto;
+import com.esgi.calendar.exception.AuthException;
+import com.esgi.calendar.exception.TechnicalException;
+import com.esgi.calendar.repository.ThemeRepository;
 import com.esgi.calendar.repository.UserRepository;
 import com.esgi.calendar.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -17,22 +24,44 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
+@Log4j2
 public class AuthServiceImpl implements IUserService {
+
+    private static final Logger LOGGER = LogManager.getLogger(AuthServiceImpl.class);
 
     private UserRepository  userRepository;
     private PasswordEncoder passwordEncoder;
+    private ThemeRepository themeRepository;
 
-    public void register(RegistrationFormDto form, Theme theme) {
 
+    public void register(RegistrationFormDto form) throws
+                                                   TechnicalException {
+        if (!form.getEmail()
+                 .matches("^[a-zA-Z0-9._%+-]+@esgi\\.fr$")) {
+
+            LOGGER.atError()
+                  .log("Invalid email format : {} must be @esgi.fr",
+                       form.getEmail());
+
+            throw new TechnicalException(ExceptionController.EMAIL_STRATEGY_ERROR);
+
+        }
+
+        Optional<Theme> theme = themeRepository.findById(form.getTheme());
+        if (theme.isEmpty()) {
+            throw new TechnicalException("Le thème choisi n'existe pas");
+        }
 
         UserCustomer newUser = new UserCustomer();
         newUser.setEmail(form.getEmail());
         newUser.setPassword(passwordEncoder.encode(form.getPassword()));
         newUser.setFirstName(form.getFirstName());
         newUser.setLastName(form.getLastName());
-        newUser.setTheme(theme);
+        newUser.setTheme(theme.get());
         userRepository.save(newUser);
     }
 
@@ -50,14 +79,20 @@ public class AuthServiceImpl implements IUserService {
         String username = authentication.getName();
         String password = authentication.getCredentials()
                                         .toString();
+
         if (username.trim()
                     .isEmpty()) {
-            throw new UsernameNotFoundException(
-                    "Le email d'utilisateurDetails ne peut pas être vide");
+            throw new AuthException(
+                    "Le email d'utilisateur ne peut pas être vide");
         }
 
         CustomUserDetails utilisateurDetails = (CustomUserDetails) loadUserByUsername(
-                username);
+                username
+        );
+
+        if (!passwordEncoder.matches(password, utilisateurDetails.getPassword())) {
+            throw new AuthException("Mot de passe incorrect");
+        }
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 utilisateurDetails,
