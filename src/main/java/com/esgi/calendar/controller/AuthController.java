@@ -15,16 +15,21 @@ import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
-public class AuthController {
+public class AuthController extends AbstractController {
 
     private ThemeRepository themeRepository;
     private AuthServiceImpl authService;
 
+    @GetMapping("/")
+    public String mainPage() {
+        return this.authHandler();
+    }
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login";
+        return this.authHandler();
     }
+
 
     @GetMapping("/signup")
     public String Form(Model model) {
@@ -41,5 +46,12 @@ public class AuthController {
             return "redirect:/login";
         }
         return "redirect:/error";
+    }
+
+    private String authHandler() {
+        if (super.getUserDetails() == null) {
+            return "login";
+        }
+        return "redirect:/weekly-calendar/0";
     }
 }
