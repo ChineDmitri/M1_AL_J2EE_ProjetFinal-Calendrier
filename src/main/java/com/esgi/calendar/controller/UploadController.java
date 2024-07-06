@@ -3,6 +3,7 @@ package com.esgi.calendar.controller;
 import com.esgi.calendar.business.GifOfDay;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
+import com.esgi.calendar.exception.TechnicalException;
 import com.esgi.calendar.service.ICalendarService;
 import com.esgi.calendar.service.impl.FileServiceImpl;
 import lombok.AllArgsConstructor;
@@ -19,14 +20,19 @@ import java.io.IOException;
 @AllArgsConstructor
 public class UploadController extends AbstractController {
 
-    private final FileServiceImpl fileService;
+    private final FileServiceImpl  fileService;
     private final ICalendarService calendarService;
 
     private static final String UPLOAD_GIF = "upload-gif";
 
     @GetMapping("/upload-gif/day/{idDay}")
-    public String uploadGif(@PathVariable int idDay, Model mav){
+    public String uploadGif(@PathVariable int idDay, Model mav) throws
+                                                                TechnicalException {
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
+
+        if (day.getGifOfDay() != null) {
+            throw new TechnicalException("Un gif est déjà associé à ce jour");
+        }
 
         mav.addAttribute("day", day);
 
@@ -40,12 +46,13 @@ public class UploadController extends AbstractController {
             Model mav,
             MultipartFile file,
             String legend
-    ){
+    ) throws
+      TechnicalException {
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
         String message;
         boolean success;
 
-        if(fileService.isGif(file)) {
+        if (fileService.isGif(file)) {
             try {
                 fileService.saveFile(file);
 
