@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bad Request</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .error-page {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .error-page h1 {
+            font-size: 100px;
+            color: #444;
+        }
+
+        .error-page p {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .error-page a {
+            color: #337ab7;
+        }
+    </style>
+</head>
+<body>
+<div class="container error-page">
+    <h1>400</h1>
+    <p>Bad Request: {{errorMessage}}</p>
+    <a href="/">Returner sur le page d'accueil</a>
+</div>
+</body>
+</html>

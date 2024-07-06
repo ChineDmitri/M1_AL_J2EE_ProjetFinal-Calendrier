@@ -10,7 +10,10 @@ public abstract class AbstractController {
         Authentication authentication = SecurityContextHolder.getContext()
                                                              .getAuthentication();
         if (authentication != null) {
-            return (CustomUserDetails) authentication.getPrincipal();
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof CustomUserDetails) {
+                return (CustomUserDetails) principal;
+            }
         }
         return null;
     }
