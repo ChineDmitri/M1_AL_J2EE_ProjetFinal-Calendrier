@@ -4,6 +4,7 @@ import com.esgi.calendar.business.Theme;
 import com.esgi.calendar.dto.req.RegistrationFormDto;
 import com.esgi.calendar.repository.ThemeRepository;
 import com.esgi.calendar.service.impl.AuthServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,12 @@ public class AuthController extends AbstractController {
 
     private ThemeRepository themeRepository;
     private AuthServiceImpl authService;
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        this.authService.performLogout(request);
+        return "redirect:/"; // Redirect to the login page or any desired logout destination
+    }
 
     @GetMapping("/")
     public String mainPage() {

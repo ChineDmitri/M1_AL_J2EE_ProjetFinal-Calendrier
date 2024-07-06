@@ -6,6 +6,8 @@ import com.esgi.calendar.business.UserCustomer;
 import com.esgi.calendar.dto.req.RegistrationFormDto;
 import com.esgi.calendar.repository.UserRepository;
 import com.esgi.calendar.service.IUserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +34,14 @@ public class AuthServiceImpl implements IUserService {
         newUser.setLastName(form.getLastName());
         newUser.setTheme(theme);
         userRepository.save(newUser);
+    }
+
+    @Override
+    public void performLogout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
     }
 
     @Override
