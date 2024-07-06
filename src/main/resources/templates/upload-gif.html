@@ -7,6 +7,13 @@
 </head>
 <body>
     <div class="container">
+
+        <button th:data-href="@{/weekly-calendar/0}"
+                onclick="location.href=this.dataset.href"
+                class="btn btn-secondary">
+            Retourner sur la page Calendrier
+        </button>
+
         <h1>Placer un gif distant sur le [[${day.date}]]</h1>
         <h2>(nombre de points : [[${day.costGif}]]</h2>
 
@@ -24,12 +31,8 @@
 
         <!-- Afficher le message de feedback -->
         <div th:if="${message}">
-            <span th:text="${message}" class="message"></span>
-            <button th:data-href="@{/weekly-calendar/0}"
-                    onclick="location.href=this.dataset.href"
-                    class="btn btn-secondary">
-                Retourner sur la page Calendrier
-            </button>
+            <span th:if="${success}" th:text="${message}" class="message" style="color: green"></span>
+            <span th:if="${!success}" th:text="${message}" class="message" style="color: darkred"></span>
         </div>
     </div>
 </body>

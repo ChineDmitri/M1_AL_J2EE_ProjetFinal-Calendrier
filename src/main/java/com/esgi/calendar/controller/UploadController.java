@@ -43,6 +43,7 @@ public class UploadController extends AbstractController {
     ){
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
         String message;
+        boolean success;
 
         if(fileService.isGif(file)) {
             try {
@@ -58,15 +59,19 @@ public class UploadController extends AbstractController {
                         idDay
                 );
                 message = "Fichier téléversé avec succès!";
+                success = true;
             } catch (IOException ex) {
+                success = false;
                 message = "Une erreur est survenue lors du téléversement du fichier : " + ex.getMessage();
                 ex.printStackTrace();
             }
         } else {
+            success = false;
             message = "Le fichier n'est pas un GIF valide.";
         }
 
         mav.addAttribute("day", day);
+        mav.addAttribute("success", success);
         mav.addAttribute("message", message);
 
         return super.getTheme(UPLOAD_GIF);
