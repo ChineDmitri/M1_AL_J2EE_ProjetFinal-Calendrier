@@ -1,29 +1,36 @@
 package com.esgi.calendar.controller;
 
-import com.esgi.calendar.business.GifOfDay;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.exception.TechnicalException;
 import com.esgi.calendar.service.ICalendarService;
 import com.esgi.calendar.service.impl.FileServiceImpl;
+import jakarta.servlet.ServletContext;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.ui.Model;
 
 import java.io.IOException;
 
 @Controller
 @AllArgsConstructor
-public class UploadController extends AbstractController {
+public class UploadController extends AbstractController implements ServletContextAware {
 
-    private final FileServiceImpl  fileService;
-    private final ICalendarService calendarService;
+    private final FileServiceImpl       fileService;
+    private final ICalendarService      calendarService;
+    private       ServletContext        servletContext;
 
     private static final String UPLOAD_GIF = "upload-gif";
+
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
 
     @GetMapping("/upload-gif/day/{idDay}")
     public String uploadGif(@PathVariable int idDay, Model mav) throws
@@ -49,14 +56,16 @@ public class UploadController extends AbstractController {
     ) throws
       TechnicalException {
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
-        String message;
-        boolean success;
+        String              message;
+        boolean             success;
 
         if (fileService.isGif(file)) {
             try {
-                fileService.saveFile(file);
-
-                dto.setUrl("/" + file.getOriginalFilename());
+                String staticDir = servletContext.getRealPath("/static/");
+                System.out.println("staticDir = " + staticDir);
+                fileService.saveFile(file, staticDir);
+                //                String staticDir = servletContext.getRealPath("/static/");
+                dto.setUrl("/static/" + file.getOriginalFilename());
                 dto.setLegende(legend);
 
                 this.calendarService.addGifForDay(
@@ -83,4 +92,5 @@ public class UploadController extends AbstractController {
 
         return super.getTheme(UPLOAD_GIF);
     }
+
 }

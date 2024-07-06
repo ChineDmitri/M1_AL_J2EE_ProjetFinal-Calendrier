@@ -8,5 +8,5 @@ import java.io.IOException;
 
 public interface IFileService {
     boolean isGif(MultipartFile file);
-    void saveFile(MultipartFile file) throws IOException;
+    void saveFile(MultipartFile file, String pathFile) throws IOException;
 }
