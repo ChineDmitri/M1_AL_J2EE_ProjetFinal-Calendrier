@@ -1,5 +1,6 @@
 package com.esgi.calendar.config;
 
+import jakarta.servlet.ServletContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,12 +9,24 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.context.ServletContextAware;
 
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration implements ServletContextAware {
 
+
+    private ServletContext servletContext;
+
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        servletContext = servletContext;
+    }
+
+    public String getServerStaicDirPath() {
+        return this.servletContext.getRealPath("/static/");
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -46,6 +59,7 @@ public class SecurityConfiguration {
                     .loginPage("/login")
                     .defaultSuccessUrl("/weekly-calendar/0", true)
                     // .successHandler(customAuthenticationSuccessHandler())
+                    .failureUrl("/login-error")
                     .permitAll()
             )
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
@@ -53,6 +67,5 @@ public class SecurityConfiguration {
         return http.build();
 
     }
-
 
 }

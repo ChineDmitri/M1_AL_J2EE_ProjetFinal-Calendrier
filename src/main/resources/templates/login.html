@@ -5,18 +5,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Se connecter</h1>
-        <form th:action="@{/login}" method="post">
+<div class="container text-center">
+    <h1>Se connecter</h1>
+    <form th:action="@{/login}" method="post" class="col-lg-6 offset-lg-3">
+        <div class="form-group">
             <label for="username">Email :</label>
-            <input type="text" id="username" name="username" required/>
+            <input type="text" id="username" name="username" class="form-control" required/>
             <br/>
-            <label for="motDePasse">Mot de passe :</label>
-            <input type="password" id="motDePasse" name="motDePasse" required/>
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" class="form-control" required/>
             <br/>
             <input type="submit" value="Se connecter" class="btn btn-primary"/>
-        </form>
-        <p>Vous n'avez pas compte ? <a th:href="@{/signup}">S'inscrire</a></p>
-    </div>
+        </div>
+    </form>
+    <p>Vous n'avez pas compte ? <a th:href="@{/signup}">S'inscrire</a></p>
+</div>
 </body>
 </html>

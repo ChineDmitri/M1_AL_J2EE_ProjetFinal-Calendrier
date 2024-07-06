@@ -1,10 +1,30 @@
 package com.esgi.calendar.controller;
 
 import com.esgi.calendar.business.CustomUserDetails;
+import jakarta.servlet.ServletContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.ServletContextAware;
 
-public abstract class AbstractController {
+public abstract class AbstractController implements ServletContextAware {
+
+//    @Value("${server.directory.gif}")
+//    private String         uploadDirGif;
+    private ServletContext servletContext;
+
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
+
+//    protected String getGifDirectory() {
+//        return this.uploadDirGif;
+//    }
+
+    protected ServletContext getServletContext() {
+        return this.servletContext;
+    }
 
     protected CustomUserDetails getUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext()
@@ -25,6 +45,10 @@ public abstract class AbstractController {
                 .equals("Dark"))
             return templateName + "-dark";
         return templateName;
+    }
+
+    public int getNumberWeek(int idDay) {
+        return (idDay - 1) == 0 ? 0 : (idDay - 1) / 7;
     }
 
 }

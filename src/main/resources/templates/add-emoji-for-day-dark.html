@@ -13,6 +13,7 @@
 </head>
 <body>
 <div class="container text-center">
+    <div th:replace="fragments/button-back :: button-back"></div>
     <h1 class="mb-4">Réagir au gif de [[${day.gifOfDay.userOwnerFirstName}]]</h1>
     <img th:if="${day.gifOfDay != null}" th:src="|${day.gifOfDay.url}|" alt="Gif" class="img-fluid mb-4"/>
     <br>

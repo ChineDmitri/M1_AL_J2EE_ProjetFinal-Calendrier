@@ -1,9 +1,12 @@
 package com.esgi.calendar.controller;
 
+import com.esgi.calendar.config.SecurityConfiguration;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
+import com.esgi.calendar.dto.res.GenericResponseDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.exception.TechnicalException;
 import com.esgi.calendar.service.ICalendarService;
+import com.esgi.calendar.service.IFileService;
 import com.esgi.calendar.service.impl.FileServiceImpl;
 import jakarta.servlet.ServletContext;
 import lombok.AllArgsConstructor;
@@ -19,18 +22,14 @@ import java.io.IOException;
 
 @Controller
 @AllArgsConstructor
-public class UploadController extends AbstractController implements ServletContextAware {
+public class UploadController extends AbstractController /*implements ServletContextAware*/ {
 
     private final FileServiceImpl       fileService;
     private final ICalendarService      calendarService;
-    private       ServletContext        servletContext;
+    private final SecurityConfiguration securityConfiguration;
 
     private static final String UPLOAD_GIF = "upload-gif";
-
-    @Override
-    public void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
+    private static final String DIR_GIF    = "/static/";
 
     @GetMapping("/upload-gif/day/{idDay}")
     public String uploadGif(@PathVariable int idDay, Model mav) throws
@@ -54,41 +53,29 @@ public class UploadController extends AbstractController implements ServletConte
             MultipartFile file,
             String legend
     ) throws
+      IOException,
       TechnicalException {
+
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
-        String              message;
-        boolean             success;
 
-        if (fileService.isGif(file)) {
-            try {
-                String staticDir = servletContext.getRealPath("/static/");
-                System.out.println("staticDir = " + staticDir);
-                fileService.saveFile(file, staticDir);
-                //                String staticDir = servletContext.getRealPath("/static/");
-                dto.setUrl("/static/" + file.getOriginalFilename());
-                dto.setLegende(legend);
+        GenericResponseDto resDto = this.fileService.saveFile(
+                file,
+                legend,
+                super.getServletContext()
+                     .getRealPath(
+                             IFileService.UPLOAD_DIR_GIF
+                     ),
+                idDay,
+                super.getUserDetails()
+                     .getUserCustomer()
+        );
 
-                this.calendarService.addGifForDay(
-                        dto,
-                        super.getUserDetails()
-                             .getUserCustomer(),
-                        idDay
-                );
-                message = "Fichier téléversé avec succès!";
-                success = true;
-            } catch (IOException ex) {
-                success = false;
-                message = "Une erreur est survenue lors du téléversement du fichier : " + ex.getMessage();
-                ex.printStackTrace();
-            }
-        } else {
-            success = false;
-            message = "Le fichier n'est pas un GIF valide.";
-        }
+        boolean success = resDto.getStatus()
+                                .is2xxSuccessful() ? true : false;
 
         mav.addAttribute("day", day);
         mav.addAttribute("success", success);
-        mav.addAttribute("message", message);
+        mav.addAttribute("message", resDto.getMessage());
 
         return super.getTheme(UPLOAD_GIF);
     }

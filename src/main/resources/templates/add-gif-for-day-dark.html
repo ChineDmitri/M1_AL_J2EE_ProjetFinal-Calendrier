@@ -12,17 +12,23 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container text-center">
+    <div th:replace="fragments/button-back :: button-back"></div>
     <h1>Placer un gif distant sur le [[${day.date}]]</h1>
     <h2>(nombre de points : [[${day.costGif}]])</h2>
-    <form action="#" th:action="@{/weekly-calendar/add-gif/day/{id}(id=${day.id})}" method="post">
-        <label for="url">URL du GIF :</label>
-        <input type="text" id="url" name="url" th:value="${day.gifOfDay?.url}"/>
-        <br/>
-        <label for="legend">Légende :</label>
-        <input type="text" id="legend" name="legend" th:value="${day.gifOfDay?.title}"/>
-        <br/>
-        <button type="submit" class="btn btn-primary">Placer</button>
+    <form action="#"
+          th:action="@{/weekly-calendar/add-gif/day/{id}(id=${day.id})}"
+          method="post"
+          class="col-lg-6 offset-lg-3">
+        <div class="form-group">
+            <label for="url">URL du GIF :</label>
+            <input type="text" id="url" name="url" class="form-control" th:value="${day.gifOfDay?.url}"/>
+            <br/>
+            <label for="legend">Légende :</label>
+            <input type="text" id="legend" name="legend" class="form-control" th:value="${day.gifOfDay?.title}"/>
+            <br/>
+            <button type="submit" class="btn btn-primary">Placer</button>
+        </div>
     </form>
 </div>
 </body>
