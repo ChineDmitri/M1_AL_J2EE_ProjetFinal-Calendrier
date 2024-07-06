@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Placer un gif distant sur le [[${day.date}]]</h1>
+    <h1>Téléverser un gif sur le [[${day.date}]]</h1>
     <h2>(nombre de points : [[${day.costGif}]]</h2>
 
     <form action="#" th:action="@{/upload-gif/day/{id}(id=${day.id})}" method="post" enctype="multipart/form-data">

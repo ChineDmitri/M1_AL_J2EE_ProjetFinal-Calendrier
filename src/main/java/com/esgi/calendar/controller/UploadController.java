@@ -30,6 +30,10 @@ public class UploadController extends AbstractController {
                                                                 TechnicalException {
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
 
+        if (day.getGifOfDay() != null) {
+            throw new TechnicalException("Un gif est déjà associé à ce jour");
+        }
+
         mav.addAttribute("day", day);
 
         return super.getTheme(UPLOAD_GIF);

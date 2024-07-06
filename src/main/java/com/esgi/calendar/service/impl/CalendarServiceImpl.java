@@ -55,8 +55,8 @@ public class CalendarServiceImpl implements ICalendarService {
         Optional<DayOfActualMonth> day = this.dayOfActualMonthRepository.findById(Long.valueOf(
                 idDay));
 
-        if (day.get().getGifOfDay() == null) {
-            throw new TechnicalException("Gif pour ce jour n'éxiste pas");
+        if (day.isEmpty()) {
+            throw new TechnicalException("Jour n'éxiste pas");
         }
 
         return day.map(dayOfActualMapper::toDto)
@@ -66,13 +66,20 @@ public class CalendarServiceImpl implements ICalendarService {
     @Override
     public DayOfActualMonthDto addGifForDay(GifOfDayDto dto,
                                             UserCustomer user,
-                                            int idDay) {
+                                            int idDay) throws
+                                                       TechnicalException {
+        DayOfActualMonth day = this.dayOfActualMonthRepository.findById(Long.valueOf(idDay))
+                                                              .orElse(null);
+
+        if (day.getGifOfDay() != null) {
+            throw new TechnicalException("Gif existe déja pour ce jour!");
+        }
+
         GifOfDay gif = this.gifOfDayMapper.toEntity(dto);
         gif.setUserOwner(user);
         gif = this.gifOfDayRepository.save(gif);
 
-        DayOfActualMonth day = this.dayOfActualMonthRepository.findById(Long.valueOf(idDay))
-                                                              .orElse(null);
+
 
         if (day != null) {
             day.setGifOfDay(gif);

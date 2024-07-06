@@ -38,13 +38,19 @@ public class WeeklyCalendarController extends AbstractController {
     public String addGifForDay(@PathVariable int idDay, Model model) throws
                                                                      TechnicalException {
         DayOfActualMonthDto day = this.calendarService.getDayOfActualMonth(idDay);
+
+        if (day.getGifOfDay() != null) {
+            throw new TechnicalException("Un gif est déjà associé à ce jour");
+        }
+
         model.addAttribute("day", day);
 
         return super.getTheme(ADD_GIF);
     }
 
     @PostMapping("/add-gif/day/{idDay}")
-    public String addGifForDay2(@PathVariable int idDay, GifOfDayDto dto, Model model) {
+    public String addGifForDay2(@PathVariable int idDay, GifOfDayDto dto, Model model) throws
+                                                                                       TechnicalException {
         DayOfActualMonthDto dayOfActualMonth = this.calendarService.addGifForDay(
                 dto,
                 super.getUserDetails()
@@ -61,6 +67,11 @@ public class WeeklyCalendarController extends AbstractController {
     public String getPageForAddEmoji(@PathVariable int idDay, Model model) throws
                                                                            TechnicalException {
         DayOfActualMonthDto day    = this.calendarService.getDayOfActualMonth(idDay);
+
+        if (day.getGifOfDay() == null) {
+            throw new TechnicalException("Il n'y a pas de gif pour ce jour!");
+        }
+
         List<EmojiDto>      emojis = this.emojiService.getAllEmoji();
         model.addAttribute("day", day);
         model.addAttribute("emojis", emojis);
