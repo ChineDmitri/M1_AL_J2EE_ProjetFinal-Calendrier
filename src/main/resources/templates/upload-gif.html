@@ -15,15 +15,15 @@
         </button>
 
         <h1>Placer un gif distant sur le [[${day.date}]]</h1>
-        <h2>(nombre de points : [[${day.costGif}]]</h2>
+        <h2>(nombre de points : [[${day.costGif}]])</h2>
 
         <form action="#" th:action="@{/upload-gif/day/{id}(id=${day.id})}" method="post" enctype="multipart/form-data">
             <div class="file-field">
-                <label>Fichier à téléverser</label>
+                <label>Fichier à téléverser : </label>
                 <input type="file" name="file">
             </div>
             <div class="legend-field">
-                <label>Légende</label>
+                <label>Légende : </label>
                 <input type="text" name="legend">
             </div>
             <button type="submit" class="btn btn-primary">Placer</button>
