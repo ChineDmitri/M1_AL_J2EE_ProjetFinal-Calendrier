@@ -3,6 +3,7 @@ package com.esgi.calendar.service.impl;
 import com.esgi.calendar.business.*;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
+import com.esgi.calendar.exception.TechnicalException;
 import com.esgi.calendar.mapper.DayOfActualMonthMapper;
 import com.esgi.calendar.mapper.GifOfDayMapper;
 import com.esgi.calendar.repository.DayOfActualMonthRepository;
@@ -49,9 +50,14 @@ public class CalendarServiceImpl implements ICalendarService {
     }
 
     @Override
-    public DayOfActualMonthDto getDayOfActualMonth(int idDay) {
+    public DayOfActualMonthDto getDayOfActualMonth(int idDay) throws
+                                                              TechnicalException {
         Optional<DayOfActualMonth> day = this.dayOfActualMonthRepository.findById(Long.valueOf(
                 idDay));
+
+        if (day.get().getGifOfDay() == null) {
+            throw new TechnicalException("Gif pour ce jour n'éxiste pas");
+        }
 
         return day.map(dayOfActualMapper::toDto)
                   .orElse(null);
@@ -80,7 +86,15 @@ public class CalendarServiceImpl implements ICalendarService {
     @Override
     public GifOfDayDto addReactionForDayWithGif(int idDay,
                                                 Long idGif,
-                                                UserCustomer user) {
+                                                UserCustomer user) throws
+                                                                   TechnicalException {
+        GifOfDay gif = this.gifOfDayRepository.findById(Long.valueOf(idDay))
+                                              .orElse(null);
+
+        if (gif == null) {
+            throw new TechnicalException("Gif pour ce jour n'éxiste pas");
+        }
+
         Emoji emoji = this.emojiRepository.findById(idGif)
                                           .orElse(null);
 
@@ -89,8 +103,6 @@ public class CalendarServiceImpl implements ICalendarService {
         reaction.setEmoji(emoji);
         this.reactionRepository.save(reaction);
 
-        GifOfDay gif = this.gifOfDayRepository.findById(Long.valueOf(idDay))
-                                              .orElse(null);
 
         if (gif != null) {
             reaction.setGifOfDay(gif);
