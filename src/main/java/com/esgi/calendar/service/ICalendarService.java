@@ -17,7 +17,8 @@ public interface ICalendarService {
                                                               TechnicalException;
 
     public DayOfActualMonthDto addGifForDay(GifOfDayDto dto, UserCustomer user,
-                                            int idDay);
+                                            int idDay) throws
+                                                       TechnicalException;
 
     public GifOfDayDto addReactionForDayWithGif(int idDay,
                                                 Long idGif,
