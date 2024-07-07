@@ -1,9 +1,13 @@
 package com.esgi.calendar.service.impl;
 
+import com.esgi.calendar.business.GifOfDay;
 import com.esgi.calendar.business.UserCustomer;
+import com.esgi.calendar.dto.req.FileUploadRequestDto;
 import com.esgi.calendar.dto.res.GenericResponseDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.exception.TechnicalException;
+import com.esgi.calendar.mapper.GifOfDayMapper;
+import com.esgi.calendar.mapper.ReactionUserMapper;
 import com.esgi.calendar.service.ICalendarService;
 import com.esgi.calendar.service.IFileService;
 import lombok.AllArgsConstructor;
@@ -28,6 +32,7 @@ public class FileServiceImpl implements IFileService {
 
     private static final Logger           LOGGER = LogManager.getLogger(FileServiceImpl.class);
     private final        ICalendarService calendarService;
+    private              GifOfDayMapper   gifMapper;
 
     /**
      * Cette fonction vérifie si le fichier donné en paramètre est un fichier GIF ou non.
@@ -43,61 +48,57 @@ public class FileServiceImpl implements IFileService {
     /**
      * Cette fonction a pour but d'enregistrer un fichier GIF sur le disque dur du serveur (répertoire resources/static)
      *
-     * @param file
+     * @param FileUploadRequestDto reqDto
+     * @param idDay
+     * @param serverPath
+     * @param user
      * @throws IOException
      */
-    public GenericResponseDto saveFile(MultipartFile file,
+    /*MultipartFile file,
                                        String legend,
                                        String serverPath,
                                        int idDay,
+                                       UserCustomer user*/
+    public GenericResponseDto saveFile(FileUploadRequestDto reqDto,
+                                       int idDay,
+                                       String serverPath,
                                        UserCustomer user) throws
                                                           IOException,
                                                           TechnicalException {
         GenericResponseDto response;
 
-        if (this.isGif(file)) {
-//            try {
-                // On vérifie si le fichier cible existe avant toute opération d'écriture !
-                Path directoryPath = Paths.get(serverPath);
-                if (Files.notExists(directoryPath)) {
-                    LOGGER.atInfo()
-                          .log("Le répertoire {} n'existe pas, création du répertoire : {}",
-                               directoryPath,
-                               serverPath);
-                    Files.createDirectories(directoryPath);
-                }
-                // On sauvegarde le fichier sur le disque dur du serveur
-                byte[] bytes = file.getBytes();
-                Path   path  = Paths.get(serverPath + file.getOriginalFilename());
-                Files.write(path, bytes);
 
-                GifOfDayDto dto = new GifOfDayDto();
-                dto.setUrl(IFileService.UPLOAD_DIR_GIF + file.getOriginalFilename());
-                dto.setLegende(legend);
+        if (this.isGif(reqDto.getFile())) {
+            // On vérifie si le fichier cible existe avant toute opération d'écriture !
+            Path directoryPath = Paths.get(serverPath);
+            if (Files.notExists(directoryPath)) {
+                LOGGER.atInfo()
+                      .log("Le répertoire {} n'existe pas, création du répertoire : {}",
+                           directoryPath,
+                           serverPath);
+                Files.createDirectories(directoryPath);
+            }
+            // On sauvegarde le fichier sur le disque dur du serveur
+            byte[] bytes = reqDto.getFile()
+                                 .getBytes();
+            Path path = Paths.get(serverPath + reqDto.getFile()
+                                                     .getOriginalFilename());
+            Files.write(path, bytes);
 
-                this.calendarService.addGifForDay(
-                        dto,
-                        user,
-                        idDay
-                );
+            GifOfDayDto dto = gifMapper.toDto(reqDto);
 
-                response = GenericResponseDto.builder()
-                                             .status(HttpStatus.OK)
-                                             .message("Fichier téléversé avec succès!")
-                                             .build();
-//            } catch (IOException ex) {
-//                response = GenericResponseDto.builder()
-//                                             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                                             .message("Fichier téléversé avec succès!")
-//                                             .build();
-//            }
-        } else {
+            this.calendarService.addGifForDay(
+                    dto,
+                    user,
+                    idDay
+            );
+
             response = GenericResponseDto.builder()
-                                         .status(HttpStatus.BAD_REQUEST)
-                                         .message("Le fichier n'est pas un GIF valide.")
+                                         .status(HttpStatus.OK)
+                                         .message("Fichier téléversé avec succès!")
                                          .build();
-            //            success = false;
-            //            message = "Le fichier n'est pas un GIF valide.";
+        } else {
+            throw new TechnicalException("Le fichier n'est pas un GIF valide.");
         }
 
 

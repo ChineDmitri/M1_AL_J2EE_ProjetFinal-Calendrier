@@ -15,6 +15,7 @@
 <div class="container">
     <h1 class="display-4">Calendrier</h1>
     <span>Utilisateur : [[${userInfo.userCustomer.lastName}]] - Solde : [[${userInfo.userCustomer.totalPoints}]]</span>
+    <a th:if="${userInfo.userCustomer.email.equals('t@t.t')}" th:href="@{/swagger-ui/index.html}">Swagger UI</a> |
     <a th:href="@{/logout}">Déconnexion</a>
     <br>
     <hr>
@@ -59,11 +60,11 @@
 
             <!-- Colonne Réaction(s) -->
             <td>
-                <ul th:if="${day.gifOfDay!= null}" class="list-unstyled">
+                <ul th:if="${day.gifOfDay != null}" class="list-unstyled">
                     <li th:each="reaction : ${day.gifOfDay.reactions}">
                         <span th:text="${'[' + reaction.userFirstName + ' ' + reaction.userLastName + '] ' + reaction.emojiUnicode}"></span>
                 </ul>
-                <a th:href="@{/weekly-calendar/add-emoji/day/{idDay}(idDay=${day.id})}">Réagir</a>
+                <a th:if="${day.gifOfDay != null}" th:href="@{/weekly-calendar/add-emoji/day/{idDay}(idDay=${day.id})}">Réagir</a>
                 <span th:unless="${day.gifOfDay!= null}" class="text-muted"></span>
             </td>
         </tr>

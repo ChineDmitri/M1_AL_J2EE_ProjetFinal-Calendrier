@@ -3,6 +3,7 @@ package com.esgi.calendar.service;
 import com.esgi.calendar.business.CustomUserDetails;
 import com.esgi.calendar.business.GifOfDay;
 import com.esgi.calendar.business.UserCustomer;
+import com.esgi.calendar.dto.req.FileUploadRequestDto;
 import com.esgi.calendar.dto.res.GenericResponseDto;
 import com.esgi.calendar.exception.TechnicalException;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,11 +16,11 @@ public interface IFileService {
 
     public boolean isGif(MultipartFile file);
 
-    public GenericResponseDto saveFile(MultipartFile file,
-                                       String legend,
-                                       String serverPath,
+
+    public GenericResponseDto saveFile(FileUploadRequestDto reqDto,
                                        int idDay,
-                                       UserCustomer idUser) throws
+                                       String serverPath,
+                                       UserCustomer user) throws
                                                             IOException,
                                                             TechnicalException;
 }

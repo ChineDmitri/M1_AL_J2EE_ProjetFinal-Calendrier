@@ -27,6 +27,10 @@ public class CustomUserDetails implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    public Collection<? extends GrantedAuthority> getSuperAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
+
     @Override
     public String getPassword() {
         return userCustomer.getPassword();

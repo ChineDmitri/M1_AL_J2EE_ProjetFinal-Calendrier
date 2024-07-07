@@ -28,10 +28,4 @@ public class Reaction {
     @JoinColumn(name = "gif_of_day_id")
     private GifOfDay gifOfDay;
 
-
-    // Add a constructor with emoji and userCustomer
-    /*public Reaction(Emoji emoji, UserCustomer userCustomer) {
-        this.emoji = emoji;
-        this.userCustomer = userCustomer;
-    }*/
 }
