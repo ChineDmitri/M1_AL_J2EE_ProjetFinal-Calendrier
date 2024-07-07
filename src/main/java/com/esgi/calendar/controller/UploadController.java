@@ -1,6 +1,7 @@
 package com.esgi.calendar.controller;
 
 import com.esgi.calendar.config.SecurityConfiguration;
+import com.esgi.calendar.dto.req.FileUploadRequestDto;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.GenericResponseDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
@@ -48,10 +49,8 @@ public class UploadController extends AbstractController /*implements ServletCon
     @PostMapping("/upload-gif/day/{idDay}")
     public String handleFileUpload(
             @PathVariable int idDay,
-            GifOfDayDto dto,
             Model mav,
-            MultipartFile file,
-            String legend
+            FileUploadRequestDto reqDto
     ) throws
       IOException,
       TechnicalException {
@@ -59,13 +58,12 @@ public class UploadController extends AbstractController /*implements ServletCon
         DayOfActualMonthDto day = calendarService.getDayOfActualMonth(idDay);
 
         GenericResponseDto resDto = this.fileService.saveFile(
-                file,
-                legend,
+                reqDto,
+                idDay,
                 super.getServletContext()
                      .getRealPath(
                              IFileService.UPLOAD_DIR_GIF
                      ),
-                idDay,
                 super.getUserDetails()
                      .getUserCustomer()
         );

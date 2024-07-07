@@ -42,6 +42,7 @@ public class InitialDataSetup {
         UserCustomer userTest = new UserCustomer().builder()
                                                   .firstName("TestFirstName")
                                                   .lastName("TestLastName")
+                                                  .totalPoints(1000)
                                                   .email("t@t.t")
                                                   .password(
                                                           this.passwordEncoder

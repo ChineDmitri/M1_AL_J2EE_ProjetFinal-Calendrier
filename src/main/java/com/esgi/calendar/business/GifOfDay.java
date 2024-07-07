@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -31,9 +29,40 @@ public class GifOfDay {
     @JoinColumn(name = "user_id", nullable = false)
     private UserCustomer userOwner;
 
-    @OneToOne(mappedBy = "gifOfDay")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "gifOfDay")
     private DayOfActualMonth dayOfActualMonth;
 
     @OneToMany(mappedBy = "gifOfDay", cascade = CascadeType.ALL)
     private List<Reaction> reactions = new ArrayList<>();
+
+    public void addOrReplaceIfExistReaction(Reaction reaction) {
+        if (reaction != null) {
+            Reaction existingReaction = this.reactions.stream()
+                                                      .filter(r -> r.getUserCustomer()
+                                                                    .getId()
+                                                                    .equals(reaction.getUserCustomer()
+                                                                                    .getId()))
+                                                      .findFirst()
+                                                      .orElse(null);
+
+            if (existingReaction != null) {
+                existingReaction.setEmoji(reaction.getEmoji());
+            } else {
+                this.reactions.add(reaction);
+//                reaction.getUserCustomer().removePoints(this.getDayOfActualMonth()
+//                                                            .getCostGif());
+            }
+        }
+    }
+
+
+    /**
+     * Removes the cost of the gif from the user owner's points.
+     *
+     * @throws IllegalArgumentException If the provided user not have enough points to
+     * buy a place for the GIF.
+     */
+    public void removePointsToUserOwner() {
+        this.getUserOwner().removePoints(this.getDayOfActualMonth().getCostGif());
+    }
 }

@@ -6,15 +6,13 @@ import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.exception.TechnicalException;
 import com.esgi.calendar.mapper.DayOfActualMonthMapper;
 import com.esgi.calendar.mapper.GifOfDayMapper;
-import com.esgi.calendar.repository.DayOfActualMonthRepository;
-import com.esgi.calendar.repository.EmojiRepository;
-import com.esgi.calendar.repository.GifOfDayRepository;
-import com.esgi.calendar.repository.ReactionRepository;
+import com.esgi.calendar.repository.*;
 import com.esgi.calendar.service.ICalendarService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +23,11 @@ public class CalendarServiceImpl implements ICalendarService {
     private final DayOfActualMonthRepository dayOfActualMonthRepository;
     private final GifOfDayRepository         gifOfDayRepository;
     private final EmojiRepository            emojiRepository;
-    private final ReactionRepository         reactionRepository;
+    private final UserRepository             userRepository;
 
-    private final DayOfActualMonthMapper dayOfActualMapper;
-    private final GifOfDayMapper         gifOfDayMapper;
+    private final DayOfActualMonthMapper  dayOfActualMapper;
+    private final GifOfDayMapper          gifOfDayMapper;
+    private final UserCustomerServiceImpl userCustomerServiceImpl;
 
     @Override
     public List<DayOfActualMonthDto> getWeeklyCalendar(int week) {
@@ -71,23 +70,23 @@ public class CalendarServiceImpl implements ICalendarService {
         DayOfActualMonth day = this.dayOfActualMonthRepository.findById(Long.valueOf(idDay))
                                                               .orElse(null);
 
+        if (day == null) {
+            throw new TechnicalException("Jour n'est pas disponible pour ajouter un gif!");
+        }
+
         if (day.getGifOfDay() != null) {
             throw new TechnicalException("Gif existe déja pour ce jour!");
         }
 
         GifOfDay gif = this.gifOfDayMapper.toEntity(dto);
         gif.setUserOwner(user);
-        gif = this.gifOfDayRepository.save(gif);
+        this.gifOfDayRepository.save(gif);
 
+        day.setGifOfDayAndRemovePoints(gif);
+        this.dayOfActualMonthRepository.save(day);
+//        gif.removePointsToUserOwner();
+        return this.dayOfActualMapper.toDto(day);
 
-
-        if (day != null) {
-            day.setGifOfDay(gif);
-            this.dayOfActualMonthRepository.save(day);
-            return this.dayOfActualMapper.toDto(day);
-        }
-
-        return null;
     }
 
     @Override
@@ -108,17 +107,15 @@ public class CalendarServiceImpl implements ICalendarService {
         Reaction reaction = new Reaction();
         reaction.setUserCustomer(user);
         reaction.setEmoji(emoji);
-        this.reactionRepository.save(reaction);
 
+        reaction.setGifOfDay(gif);
+        gif.addOrReplaceIfExistReaction(reaction);
+        //        user.removePoints(reaction.getGifOfDay()
+        //                                  .getDayOfActualMonth()
+        //                                  .getCostGif());
+        this.gifOfDayRepository.save(gif);
 
-        if (gif != null) {
-            reaction.setGifOfDay(gif);
-            gif.getReactions().add(reaction);
-            this.gifOfDayRepository.save(gif);
-            return this.gifOfDayMapper.toDto(gif);
-        }
-
-        return null;
+        return this.gifOfDayMapper.toDto(gif);
     }
 
 }

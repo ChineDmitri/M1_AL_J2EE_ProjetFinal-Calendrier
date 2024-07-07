@@ -29,4 +29,12 @@ public class DayOfActualMonth {
 
     @Column(name = "cost_gif")
     private int costGif;
+
+    public void setGifOfDayAndRemovePoints(GifOfDay gifOfDay) {
+        this.setGifOfDay(gifOfDay);
+
+        this.getGifOfDay().getUserOwner().removePoints(this.costGif);
+    }
+
+
 }

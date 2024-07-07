@@ -58,4 +58,12 @@ public class UserCustomer {
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 
+    public void removePoints(int pointsToRemove) {
+        if (this.totalPoints - pointsToRemove < 0) {
+            throw new IllegalArgumentException(
+                    "Vous n'avez pas assez de points pour effectuer cette action.");
+        }
+        this.totalPoints -= pointsToRemove;
+    }
+
 }

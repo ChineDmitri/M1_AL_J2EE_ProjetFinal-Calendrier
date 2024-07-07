@@ -1,9 +1,11 @@
 package com.esgi.calendar.controller;
 
+import com.esgi.calendar.business.DayOfActualMonth;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.EmojiDto;
 import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.exception.TechnicalException;
+import com.esgi.calendar.repository.DayOfActualMonthRepository;
 import com.esgi.calendar.service.ICalendarService;
 import com.esgi.calendar.service.IEmojiService;
 import lombok.AllArgsConstructor;
@@ -18,8 +20,9 @@ import java.util.List;
 @AllArgsConstructor
 public class WeeklyCalendarController extends AbstractController {
 
-    private ICalendarService calendarService;
-    private IEmojiService    emojiService;
+    private ICalendarService           calendarService;
+    private IEmojiService              emojiService;
+    private DayOfActualMonthRepository dayOfActualMonthRepository;
 
     private static final String WEEKLY_CALENDAR = "weekly-calendar";
     private static final String ADD_GIF         = "add-gif-for-day";
@@ -35,7 +38,7 @@ public class WeeklyCalendarController extends AbstractController {
     }
 
     @GetMapping("/add-gif/day/{idDay}")
-    public String addGifForDay(@PathVariable int idDay, Model model) throws
+    public String getPageToAddGifForDay(@PathVariable int idDay, Model model) throws
                                                                      TechnicalException {
         DayOfActualMonthDto day = this.calendarService.getDayOfActualMonth(idDay);
 
@@ -49,8 +52,9 @@ public class WeeklyCalendarController extends AbstractController {
     }
 
     @PostMapping("/add-gif/day/{idDay}")
-    public String addGifForDay2(@PathVariable int idDay, GifOfDayDto dto, Model model) throws
-                                                                                       TechnicalException {
+    public String addGifForDay(@PathVariable int idDay, GifOfDayDto dto,
+                                Model model) throws
+                                             TechnicalException {
         DayOfActualMonthDto dayOfActualMonth = this.calendarService.addGifForDay(
                 dto,
                 super.getUserDetails()
@@ -66,13 +70,13 @@ public class WeeklyCalendarController extends AbstractController {
     @GetMapping("/add-emoji/day/{idDay}")
     public String getPageForAddEmoji(@PathVariable int idDay, Model model) throws
                                                                            TechnicalException {
-        DayOfActualMonthDto day    = this.calendarService.getDayOfActualMonth(idDay);
+        DayOfActualMonthDto day = this.calendarService.getDayOfActualMonth(idDay);
 
         if (day.getGifOfDay() == null) {
             throw new TechnicalException("Il n'y a pas de gif pour ce jour!");
         }
 
-        List<EmojiDto>      emojis = this.emojiService.getAllEmoji();
+        List<EmojiDto> emojis = this.emojiService.getAllEmoji();
         model.addAttribute("day", day);
         model.addAttribute("emojis", emojis);
 
@@ -84,6 +88,9 @@ public class WeeklyCalendarController extends AbstractController {
                                  @RequestParam("reaction") Long emojiId,
                                  Model model) throws
                                               TechnicalException {
+        DayOfActualMonth dayEntity = this.dayOfActualMonthRepository.findById(Long.valueOf(idDay))
+                                                                     .orElse(null);
+
         GifOfDayDto day = this.calendarService.addReactionForDayWithGif(
                 idDay,
                 emojiId,
@@ -97,9 +104,9 @@ public class WeeklyCalendarController extends AbstractController {
     }
 
 
-//    private int getNumberWeek(int idDay) {
-//        return (idDay - 1) == 0 ? 0 : (idDay - 1) / 7;
-//    }
+    //    private int getNumberWeek(int idDay) {
+    //        return (idDay - 1) == 0 ? 0 : (idDay - 1) / 7;
+    //    }
 
 
 }
