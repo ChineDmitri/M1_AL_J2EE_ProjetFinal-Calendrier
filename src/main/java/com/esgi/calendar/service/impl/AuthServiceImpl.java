@@ -102,7 +102,7 @@ public class AuthServiceImpl implements IUserService {
             return new UsernamePasswordAuthenticationToken(
                     utilisateurDetails,
                     password,
-                    getAdminAutroities());
+                    utilisateurDetails.getSuperAuthorities());
         }
 
         return new UsernamePasswordAuthenticationToken(
@@ -132,7 +132,7 @@ public class AuthServiceImpl implements IUserService {
 
     private Collection<? extends GrantedAuthority> getAdminAutroities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"),
-                             new SimpleGrantedAuthority("ROLE_ADMIN"));
+                             new SimpleGrantedAuthority("ROLE_USER"));
     }
 
 }

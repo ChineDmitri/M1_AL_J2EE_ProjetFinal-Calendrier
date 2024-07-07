@@ -52,6 +52,8 @@ public class SecurityConfiguration implements ServletContextAware {
             .authorizeRequests(authorizeRequests -> authorizeRequests
                     .requestMatchers("/h2/**", "/api/hello", "/login", "/signup")
                     .permitAll()
+                    .requestMatchers("/swagger-ui/**")
+                    .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated()
             )

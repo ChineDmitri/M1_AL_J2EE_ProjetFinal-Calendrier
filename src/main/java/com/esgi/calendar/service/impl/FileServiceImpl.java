@@ -63,13 +63,12 @@ public class FileServiceImpl implements IFileService {
                                        int idDay,
                                        String serverPath,
                                        UserCustomer user) throws
-                                                            IOException,
-                                                            TechnicalException {
+                                                          IOException,
+                                                          TechnicalException {
         GenericResponseDto response;
 
 
         if (this.isGif(reqDto.getFile())) {
-            //            try {
             // On vérifie si le fichier cible existe avant toute opération d'écriture !
             Path directoryPath = Paths.get(serverPath);
             if (Files.notExists(directoryPath)) {
@@ -82,14 +81,11 @@ public class FileServiceImpl implements IFileService {
             // On sauvegarde le fichier sur le disque dur du serveur
             byte[] bytes = reqDto.getFile()
                                  .getBytes();
-            Path   path  = Paths.get(serverPath + reqDto.getFile()
-                                                        .getOriginalFilename());
+            Path path = Paths.get(serverPath + reqDto.getFile()
+                                                     .getOriginalFilename());
             Files.write(path, bytes);
 
             GifOfDayDto dto = gifMapper.toDto(reqDto);
-//            dto.setUrl(IFileService.UPLOAD_DIR_GIF + reqDto.getFile()
-//                                                           .getOriginalFilename());
-//            dto.setLegende(reqDto.getLegende());
 
             this.calendarService.addGifForDay(
                     dto,
@@ -101,17 +97,7 @@ public class FileServiceImpl implements IFileService {
                                          .status(HttpStatus.OK)
                                          .message("Fichier téléversé avec succès!")
                                          .build();
-            //            } catch (IOException ex) {
-            //                response = GenericResponseDto.builder()
-            //                                             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            //                                             .message("Fichier téléversé avec succès!")
-            //                                             .build();
-            //            }
         } else {
-//            response = GenericResponseDto.builder()
-//                                         .status(HttpStatus.BAD_REQUEST)
-//                                         .message("Le fichier n'est pas un GIF valide.")
-//                                         .build();
             throw new TechnicalException("Le fichier n'est pas un GIF valide.");
         }
 

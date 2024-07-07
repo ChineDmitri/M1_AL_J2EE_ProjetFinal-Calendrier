@@ -84,7 +84,6 @@ public class CalendarServiceImpl implements ICalendarService {
 
         day.setGifOfDayAndRemovePoints(gif);
         this.dayOfActualMonthRepository.save(day);
-//        gif.removePointsToUserOwner();
         return this.dayOfActualMapper.toDto(day);
 
     }
@@ -110,9 +109,6 @@ public class CalendarServiceImpl implements ICalendarService {
 
         reaction.setGifOfDay(gif);
         gif.addOrReplaceIfExistReaction(reaction);
-        //        user.removePoints(reaction.getGifOfDay()
-        //                                  .getDayOfActualMonth()
-        //                                  .getCostGif());
         this.gifOfDayRepository.save(gif);
 
         return this.gifOfDayMapper.toDto(gif);

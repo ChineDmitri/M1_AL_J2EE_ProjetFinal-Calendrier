@@ -49,20 +49,8 @@ public class GifOfDay {
                 existingReaction.setEmoji(reaction.getEmoji());
             } else {
                 this.reactions.add(reaction);
-//                reaction.getUserCustomer().removePoints(this.getDayOfActualMonth()
-//                                                            .getCostGif());
             }
         }
     }
 
-
-    /**
-     * Removes the cost of the gif from the user owner's points.
-     *
-     * @throws IllegalArgumentException If the provided user not have enough points to
-     * buy a place for the GIF.
-     */
-    public void removePointsToUserOwner() {
-        this.getUserOwner().removePoints(this.getDayOfActualMonth().getCostGif());
-    }
 }
