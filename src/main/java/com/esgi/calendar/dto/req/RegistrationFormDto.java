@@ -30,8 +30,6 @@ public class RegistrationFormDto {
     @NotEmpty(message = "Le mot de passe d'utilisateur ne peut pas etre vide")
     @NotNull(message = "Le mot de passe d'utilisateur ne peut etre null")
     private String password;
-    @NotEmpty(message = "Le thème ne peut pas etre vide")
-    @NotNull(message = "Le thème ne peut etre null")
-    @NotBlank(message = "Le thème est obligatoire")
+
     private Long   theme;
 }

@@ -43,7 +43,7 @@ public class InitialDataSetup {
                                                   .firstName("TestFirstName")
                                                   .lastName("TestLastName")
                                                   .totalPoints(1000)
-                                                  .email("t@t.t")
+                                                  .email("t@esgi.fr")
                                                   .password(
                                                           this.passwordEncoder
                                                                   .encode("t")
