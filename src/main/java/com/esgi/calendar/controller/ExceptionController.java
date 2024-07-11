@@ -47,6 +47,7 @@ public class ExceptionController {
     @ExceptionHandler(IOException.class)
     public ModelAndView handleServerException(IOException ex) {
         ModelAndView modelAndView = this.prepareModelAndView(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        modelAndView.addObject("errorMessage", TRAITEMENT_ERROR);
 
         return modelAndView;
     }

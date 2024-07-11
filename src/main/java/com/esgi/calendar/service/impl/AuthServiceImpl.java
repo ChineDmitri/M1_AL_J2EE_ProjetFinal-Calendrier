@@ -54,6 +54,9 @@ public class AuthServiceImpl implements IUserService {
             throw new TechnicalException(ExceptionController.EMAIL_STRATEGY_ERROR);
 
         }
+        if (userRepository.findByEmailIgnoreCase(form.getEmail()) != null) {
+            throw new TechnicalException("Un utilisateur avec cet email existe déjà");
+        }
 
         Optional<Theme> theme = themeRepository.findById(form.getTheme());
         if (theme.isEmpty()) {

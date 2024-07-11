@@ -1,4 +1,4 @@
-package com.esgi.calendar.rest;
+package com.esgi.calendar.controller.rest;
 
 import org.springframework.boot.autoconfigure.batch.BatchTransactionManager;
 import org.springframework.web.bind.annotation.GetMapping;
