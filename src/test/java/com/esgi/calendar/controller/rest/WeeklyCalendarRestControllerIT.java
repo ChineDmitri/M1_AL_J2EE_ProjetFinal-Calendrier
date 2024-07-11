@@ -3,14 +3,18 @@ package com.esgi.calendar.controller.rest;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.exception.TechnicalException;
 import com.esgi.calendar.service.ICalendarService;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.wavefront.WavefrontProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -33,7 +37,7 @@ class WeeklyCalendarRestIntegrationTest {
     private ICalendarService calendarService;
 
     @Test
-    @WithMockUser(username = "toto", roles = {})
+    @WithMockUser(username = "testuser", roles = {"ROLE_USER"})
     void showWeeklyCalendar_shouldReturnDays_whenDaysExist() throws Exception {
 
         DayOfActualMonthDto day1 = new DayOfActualMonthDto(
@@ -55,7 +59,11 @@ class WeeklyCalendarRestIntegrationTest {
         Mockito.when(calendarService.getWeeklyCalendar(1)).thenReturn(days);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/weekly-calendar/1")
-                .accept(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON)
+                .with(request -> {
+                    request.setRemoteUser("toto");
+                    return request;
+                });
 
         mockMvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
