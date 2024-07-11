@@ -9,8 +9,10 @@ import org.springframework.web.context.ServletContextAware;
 
 public abstract class AbstractController implements ServletContextAware {
 
-//    @Value("${server.directory.gif}")
-//    private String         uploadDirGif;
+    protected static final String WEEKLY_CALENDAR = "weekly-calendar";
+    protected static final String ADD_GIF         = "add-gif-for-day";
+    protected static final String ADD_EMOJI       = "add-emoji-for-day";
+
     private ServletContext servletContext;
 
     @Override

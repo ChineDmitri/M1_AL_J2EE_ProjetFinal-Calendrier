@@ -24,9 +24,7 @@ public class WeeklyCalendarController extends AbstractController {
     private IEmojiService              emojiService;
     private DayOfActualMonthRepository dayOfActualMonthRepository;
 
-    private static final String WEEKLY_CALENDAR = "weekly-calendar";
-    private static final String ADD_GIF         = "add-gif-for-day";
-    private static final String ADD_EMOJI       = "add-emoji-for-day";
+
 
     @GetMapping("/{week}")
     public String showWeeklyCalendar(@PathVariable int week, Model model) {

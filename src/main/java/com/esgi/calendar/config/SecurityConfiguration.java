@@ -50,9 +50,9 @@ public class SecurityConfiguration implements ServletContextAware {
 
         http.csrf(csrf -> csrf.disable())
             .authorizeRequests(authorizeRequests -> authorizeRequests
-                    .requestMatchers("/h2/**", "/api/hello", "/login", "/signup")
+                    .requestMatchers("/api/hello", "/login", "/signup")
                     .permitAll()
-                    .requestMatchers("/swagger-ui/**")
+                    .requestMatchers("/swagger-ui/**", "/h2/**")
                     .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated()

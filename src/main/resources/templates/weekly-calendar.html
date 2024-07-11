@@ -9,6 +9,14 @@
 <div class="container">
     <h1 class="display-4">Calendrier</h1>
     <span>Utilisateur : [[${userInfo.userCustomer.lastName}]] - Solde : [[${userInfo.userCustomer.totalPoints}]]</span>
+    <a th:if="${userInfo.userCustomer.email.equals('admin@esgi.fr')}"
+       th:href="@{/swagger-ui/index.html}"
+       target="_blank"
+    >Swagger UI</a> |
+    <a th:if="${userInfo.userCustomer.email.equals('admin@esgi.fr')}"
+       th:href="@{/h2}"
+       target="_blank"
+    >Base de données H2</a> |
     <a th:href="@{/logout}">Déconnexion</a>
     <br>
     <hr>

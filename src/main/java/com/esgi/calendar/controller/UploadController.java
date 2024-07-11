@@ -71,11 +71,9 @@ public class UploadController extends AbstractController /*implements ServletCon
         boolean success = resDto.getStatus()
                                 .is2xxSuccessful() ? true : false;
 
-        mav.addAttribute("day", day);
-        mav.addAttribute("success", success);
-        mav.addAttribute("message", resDto.getMessage());
-
-        return super.getTheme(UPLOAD_GIF);
+        return String.format("redirect:/%s/%s",
+                             WEEKLY_CALENDAR,
+                             super.getNumberWeek(idDay));
     }
 
 }

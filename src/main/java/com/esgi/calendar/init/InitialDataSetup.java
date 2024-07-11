@@ -42,11 +42,11 @@ public class InitialDataSetup {
         UserCustomer userTest = new UserCustomer().builder()
                                                   .firstName("TestFirstName")
                                                   .lastName("TestLastName")
-                                                  .totalPoints(1000)
-                                                  .email("t@esgi.fr")
+                                                  .totalPoints(100)
+                                                  .email("admin@esgi.fr")
                                                   .password(
                                                           this.passwordEncoder
-                                                                  .encode("t")
+                                                                  .encode("admin")
                                                   )
                                                   .theme(darkTheme)
                                                   .build();
@@ -84,24 +84,34 @@ public class InitialDataSetup {
         );
         this.emojiRepository.saveAll(emotions);
 
-        GifOfDay gif = new GifOfDay().builder()
+        GifOfDay gif1 = new GifOfDay().builder()
                                      .url("https://c.tenor.com/sesbpnZ42swAAAAC/tenor.gif")
                                      .legende("We're in the good place")
                                      .userOwner(userTest)
                                      .build();
-        gifRepository.save(gif);
+        GifOfDay gif2 = new GifOfDay().builder()
+                                     .url("https://media1.tenor.com/m/12XMXV7DcfQAAAAC/darth-vader-storm-troopers.gif")
+                                     .legende("Darth Vader and storm troopers dance")
+                                     .userOwner(userTest)
+                                     .build();
+        gifRepository.save(gif1);
+        gifRepository.save(gif2);
 
         // Ajout d'une réaction
         Reaction reaction = new Reaction().builder()
                                           .userCustomer(userTest)
-                                          .gifOfDay(gif)
+                                          .gifOfDay(gif1)
                                           .emoji(emotions.get(0))
                                           .build();
         reactionRepository.save(reaction);
 
         Optional<DayOfActualMonth> day1 = this.dayRepository.findById(1L);
+        Optional<DayOfActualMonth> day2 = this.dayRepository.findById(2L);
         day1.get()
-            .setGifOfDay(gif);
+            .setGifOfDay(gif1);
+        day2.get()
+            .setGifOfDay(gif2);
         this.dayRepository.save(day1.get());
+        this.dayRepository.save(day2.get());
     }
 }

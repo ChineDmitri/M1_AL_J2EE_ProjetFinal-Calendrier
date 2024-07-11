@@ -98,11 +98,11 @@ public class AuthServiceImpl implements IUserService {
             throw new AuthException("Mot de passe incorrect");
         }
 
-        if (username.equalsIgnoreCase("t@t.t")) {
+        if (username.equalsIgnoreCase("admin@esgi.fr")) {
             return new UsernamePasswordAuthenticationToken(
                     utilisateurDetails,
                     password,
-                    utilisateurDetails.getSuperAuthorities());
+                    this.getAdminAutroities());
         }
 
         return new UsernamePasswordAuthenticationToken(
