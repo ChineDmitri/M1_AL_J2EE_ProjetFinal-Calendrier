@@ -21,13 +21,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class WeeklyCalendarRestTest {
+public class WeeklyCalendarRestControllerTest {
 
     @Mock
     private ICalendarService calendarService;
 
     @InjectMocks
-    private WeeklyCalendarRest weeklyCalendarRest;
+    private WeeklyCalendarRestController weeklyCalendarRestController;
 
     private GenericResponseDto genericResponseDto;
 
@@ -46,7 +46,7 @@ public class WeeklyCalendarRestTest {
                                          .getDayOfActualMonth(anyInt());
 
         // Act
-        ResponseEntity<?> responseEntity = weeklyCalendarRest.getGifForDay(idDay);
+        ResponseEntity<?> responseEntity = weeklyCalendarRestController.getGifForDay(idDay);
 
         // Assert
         assertNotNull(responseEntity);
@@ -62,7 +62,7 @@ public class WeeklyCalendarRestTest {
         when(calendarService.getDayOfActualMonth(anyInt())).thenReturn(dayOfActualMonthDto);
 
         // Act
-        ResponseEntity<?> responseEntity = weeklyCalendarRest.getGifForDay(idDay);
+        ResponseEntity<?> responseEntity = weeklyCalendarRestController.getGifForDay(idDay);
 
         // Assert
         assertNotNull(responseEntity);

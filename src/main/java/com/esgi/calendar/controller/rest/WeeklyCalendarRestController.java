@@ -11,11 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.hibernate.validator.internal.constraintvalidators.bv.NullValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +21,7 @@ import java.util.List;
 @RequestMapping("api")
 @Tag(name = "Weekly Calendar", description = "Weekly Calendar API")
 @AllArgsConstructor
-public class WeeklyCalendarRest {
+public class WeeklyCalendarRestController {
 
     ICalendarService calendarService;
 

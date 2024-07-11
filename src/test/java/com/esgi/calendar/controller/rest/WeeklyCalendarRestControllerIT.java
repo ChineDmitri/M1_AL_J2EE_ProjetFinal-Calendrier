@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@WithMockUser(username = "testuser", roles = "USER")
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)/*C'est pour @BeforeAll soit pas static*/
 //@DataJpaTest
-public class WeeklyCalendarRestIT {
+public class WeeklyCalendarRestControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
