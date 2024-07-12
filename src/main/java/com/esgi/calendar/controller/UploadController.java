@@ -49,7 +49,6 @@ public class UploadController extends AbstractController /*implements ServletCon
     @PostMapping("/upload-gif/day/{idDay}")
     public String handleFileUpload(
             @PathVariable int idDay,
-            Model mav,
             FileUploadRequestDto reqDto
     ) throws
       IOException,
@@ -68,8 +67,6 @@ public class UploadController extends AbstractController /*implements ServletCon
                      .getUserCustomer()
         );
 
-        boolean success = resDto.getStatus()
-                                .is2xxSuccessful() ? true : false;
 
         return String.format("redirect:/%s/%s",
                              WEEKLY_CALENDAR,

@@ -2,6 +2,7 @@ package com.esgi.calendar.controller;
 
 import com.esgi.calendar.exception.AuthException;
 import com.esgi.calendar.exception.TechnicalException;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ExceptionController {
@@ -77,7 +80,7 @@ public class ExceptionController {
         return modelAndView;
     }
 
-    @ExceptionHandler(SQLException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     public ModelAndView handleConstraintViolationException(
             ConstraintViolationException ex) {
         ModelAndView modelAndView = this.prepareModelAndView(ex, HttpStatus.BAD_REQUEST);
@@ -87,7 +90,12 @@ public class ExceptionController {
               .contains("email")) {
             errorMessage = ExceptionController.EMAIL_STRATEGY_ERROR;
         } else {
-            errorMessage = ExceptionController.TRAITEMENT_ERROR;
+//            errorMessage = ExceptionController.TRAITEMENT_ERROR;
+//            errorMessage = ex.getLocalizedMessage();
+            Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+            errorMessage = violations.stream()
+                                     .map(ConstraintViolation::getMessage)
+                                     .collect(Collectors.joining(" | "));
         }
 
         modelAndView.addObject("errorMessage", errorMessage);

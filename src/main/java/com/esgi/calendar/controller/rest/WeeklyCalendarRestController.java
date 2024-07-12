@@ -1,7 +1,9 @@
 package com.esgi.calendar.controller.rest;
 
+import com.esgi.calendar.controller.AbstractController;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.GenericResponseDto;
+import com.esgi.calendar.dto.res.GifOfDayDto;
 import com.esgi.calendar.exception.TechnicalException;
 import com.esgi.calendar.service.ICalendarService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +24,7 @@ import java.util.List;
 @RequestMapping("api")
 @Tag(name = "Weekly Calendar", description = "Weekly Calendar API")
 @AllArgsConstructor
-public class WeeklyCalendarRestController {
+public class WeeklyCalendarRestController extends AbstractController {
 
     ICalendarService calendarService;
 
@@ -90,6 +93,57 @@ public class WeeklyCalendarRestController {
     ) {
         try {
             return ResponseEntity.ok(this.calendarService.getDayOfActualMonth(idDay));
+        } catch (TechnicalException e) {
+            GenericResponseDto res = new GenericResponseDto(HttpStatus.BAD_REQUEST,
+                                                            e.getMessage());
+            return ResponseEntity.status(res.getStatus())
+                                 .body(res);
+        }
+    }
+
+
+    @PostMapping("/add-gif/day/{idDay}")
+    @Operation(
+            description = "Méthode qui permet d'ajouter un GIF à un jour du mois",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Redirect to the weekly calendar page",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = DayOfActualMonthDto.class
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Technical error occurred",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = GenericResponseDto.class
+                                    )
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<?> addGifForDay(
+            @Parameter(description = "Numero de jour du mois en cours")
+            @PathVariable
+            int idDay,
+            @RequestBody
+            GifOfDayDto dto,
+            Model model
+    ) {
+        try {
+            DayOfActualMonthDto dayOfActualMonth = this.calendarService.addGifForDay(
+                    dto,
+                    super.getUserDetails()
+                         .getUserCustomer(),
+                    idDay
+            );
+            return ResponseEntity.status(HttpStatus.OK)
+                                 .body(dayOfActualMonth);
+
         } catch (TechnicalException e) {
             GenericResponseDto res = new GenericResponseDto(HttpStatus.BAD_REQUEST,
                                                             e.getMessage());
