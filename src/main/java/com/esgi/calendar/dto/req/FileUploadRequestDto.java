@@ -12,5 +12,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class FileUploadRequestDto {
     MultipartFile file;
-    String legende;
+    String        legende;
 }

@@ -25,12 +25,10 @@ import java.io.IOException;
 @AllArgsConstructor
 public class UploadController extends AbstractController /*implements ServletContextAware*/ {
 
-    private final FileServiceImpl       fileService;
+    private final IFileService          fileService;
     private final ICalendarService      calendarService;
-    private final SecurityConfiguration securityConfiguration;
 
     private static final String UPLOAD_GIF = "upload-gif";
-    private static final String DIR_GIF    = "/static/";
 
     @GetMapping("/upload-gif/day/{idDay}")
     public String uploadGif(@PathVariable int idDay, Model mav) throws

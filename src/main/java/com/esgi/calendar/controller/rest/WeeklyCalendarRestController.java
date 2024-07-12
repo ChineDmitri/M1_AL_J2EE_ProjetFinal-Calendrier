@@ -22,7 +22,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
-@Tag(name = "Weekly Calendar", description = "Weekly Calendar API")
+@Tag(
+        name = "Weekly Calendar",
+        description = "API - Calendrier de mois en cours"
+)
 @AllArgsConstructor
 public class WeeklyCalendarRestController extends AbstractController {
 
