@@ -32,11 +32,13 @@ public class ExceptionController {
 
     @ExceptionHandler(TechnicalException.class)
     public ModelAndView handleTechnicalException(TechnicalException ex) {
-        ModelAndView modelAndView = new ModelAndView("generic-page-error");
-        modelAndView.setStatus(HttpStatus.BAD_REQUEST);
-        modelAndView.addObject("code", HttpStatus.BAD_REQUEST.value());
-        modelAndView.addObject("raison", HttpStatus.BAD_REQUEST.getReasonPhrase());
-        modelAndView.addObject("errorMessage", ex.getMessage());
+        ModelAndView modelAndView = this.prepareModelAndView(ex, HttpStatus.BAD_REQUEST);
+
+//        ModelAndView modelAndView = new ModelAndView("generic-page-error");
+//        modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+//        modelAndView.addObject("code", HttpStatus.BAD_REQUEST.value());
+//        modelAndView.addObject("raison", HttpStatus.BAD_REQUEST.getReasonPhrase());
+//        modelAndView.addObject("errorMessage", ex.getMessage());
         return modelAndView;
     }
 
