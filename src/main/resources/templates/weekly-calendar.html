@@ -24,6 +24,11 @@
     <br>
     <hr>
     <div class="btn-group">
+        <button th:data-href="@{/weekly-calendar/0}"
+                onclick="location.href=this.dataset.href"
+                class="btn btn-secondary">
+            Première page
+        </button>
         <button th:data-href="@{/weekly-calendar/{week}(week=${week-1})}"
                 onclick="location.href=this.dataset.href"
                 class="btn btn-secondary">
@@ -33,6 +38,11 @@
                 onclick="location.href=this.dataset.href"
                 class="btn btn-secondary">
             7 Jours Suivants
+        </button>
+        <button th:data-href="@{/weekly-calendar/{week}(week=${lastWeek})}"
+                onclick="location.href=this.dataset.href"
+                class="btn btn-secondary">
+            Dernière page
         </button>
     </div>
     <table class="table table-striped table-bordered table-hover">
