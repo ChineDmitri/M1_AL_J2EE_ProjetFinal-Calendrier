@@ -11,6 +11,7 @@ public interface GifOfDayMapper {
 
     @Mapping(target = "userOwnerFirstName", source = "userOwner.firstName")
     @Mapping(target = "userOwnerLastName", source = "userOwner.lastName")
+    @Mapping(target = "reactions", source = "reactions")
     GifOfDayDto toDto(GifOfDay gifOfDay);
 
     @Mapping(target = "userOwner", ignore = true)

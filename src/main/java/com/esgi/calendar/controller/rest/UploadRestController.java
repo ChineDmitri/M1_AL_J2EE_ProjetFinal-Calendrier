@@ -31,7 +31,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("api")
 @Tag(
-        name = "Download GIF",
+        name = "Upload GIF",
         description = "API - Televersement de fichier GIF pour un jour de moi en cours"
 )
 @AllArgsConstructor

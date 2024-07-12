@@ -28,7 +28,6 @@ public class GifOfDayDto {
     @JsonIgnore
     private String userOwnerLastName;
 
-    @JsonIgnore
     private List<ReactionUserDto> reactions;
 
 }

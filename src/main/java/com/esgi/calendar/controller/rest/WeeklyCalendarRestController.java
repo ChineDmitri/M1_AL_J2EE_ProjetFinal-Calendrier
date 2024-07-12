@@ -1,5 +1,6 @@
 package com.esgi.calendar.controller.rest;
 
+import com.esgi.calendar.business.DayOfActualMonth;
 import com.esgi.calendar.controller.AbstractController;
 import com.esgi.calendar.dto.res.DayOfActualMonthDto;
 import com.esgi.calendar.dto.res.GenericResponseDto;
@@ -30,6 +31,7 @@ import java.util.List;
 public class WeeklyCalendarRestController extends AbstractController {
 
     ICalendarService calendarService;
+
 
     @GetMapping("/weekly-calendar/{week}")
     @Operation(
@@ -146,6 +148,52 @@ public class WeeklyCalendarRestController extends AbstractController {
             );
             return ResponseEntity.status(HttpStatus.OK)
                                  .body(dayOfActualMonth);
+
+        } catch (TechnicalException e) {
+            GenericResponseDto res = new GenericResponseDto(HttpStatus.BAD_REQUEST,
+                                                            e.getMessage());
+            return ResponseEntity.status(res.getStatus())
+                                 .body(res);
+        }
+    }
+
+
+    @PostMapping("/add-emoji/day/{idDay}")
+    @Operation(
+            description = "Méthode qui permet d'ajouter une réaction à un jour du mois avec un GIF",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "202",
+                            description = "Accepted",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = DayOfActualMonthDto.class
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Technical error occurred",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = GenericResponseDto.class
+                                    )
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<?> addEmojiForDay(@PathVariable int idDay,
+                                            @RequestParam("reaction") Long emojiId) {
+        try {
+            GifOfDayDto day = this.calendarService.addReactionForDayWithGif(
+                    idDay,
+                    emojiId,
+                    super.getUserDetails()
+                         .getUserCustomer()
+            );
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
+                                 .body(day);
 
         } catch (TechnicalException e) {
             GenericResponseDto res = new GenericResponseDto(HttpStatus.BAD_REQUEST,
