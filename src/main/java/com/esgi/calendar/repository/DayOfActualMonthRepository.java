@@ -16,4 +16,6 @@ public interface DayOfActualMonthRepository extends JpaRepository<DayOfActualMon
     )
     List<DayOfActualMonth> findDaysBetwenTwoDate(LocalDate startDate, LocalDate endDate);
 
+    @Query("SELECT COUNT(d) FROM DayOfActualMonth d")
+    Long countAllDays();
 }

@@ -25,10 +25,16 @@ public class WeeklyCalendarController extends AbstractController {
     private DayOfActualMonthRepository dayOfActualMonthRepository;
 
 
-
     @GetMapping("/{week}")
     public String showWeeklyCalendar(@PathVariable int week, Model model) {
         List<DayOfActualMonthDto> days = this.calendarService.getWeeklyCalendar(week);
+
+        long TotalDay = this.dayOfActualMonthRepository.countAllDays()
+                                                       .intValue();
+
+        int lastWeek = (int) Math.ceil(TotalDay / 7);
+        model.addAttribute("lastWeek", lastWeek);
+
         model.addAttribute("weekData", days);
         model.addAttribute("userInfo", super.getUserDetails());
 
@@ -37,7 +43,7 @@ public class WeeklyCalendarController extends AbstractController {
 
     @GetMapping("/add-gif/day/{idDay}")
     public String getPageToAddGifForDay(@PathVariable int idDay, Model model) throws
-                                                                     TechnicalException {
+                                                                              TechnicalException {
         DayOfActualMonthDto day = this.calendarService.getDayOfActualMonth(idDay);
 
         if (day.getGifOfDay() != null) {
@@ -51,8 +57,8 @@ public class WeeklyCalendarController extends AbstractController {
 
     @PostMapping("/add-gif/day/{idDay}")
     public String addGifForDay(@PathVariable int idDay, GifOfDayDto dto,
-                                Model model) throws
-                                             TechnicalException {
+                               Model model) throws
+                                            TechnicalException {
         DayOfActualMonthDto dayOfActualMonth = this.calendarService.addGifForDay(
                 dto,
                 super.getUserDetails()
@@ -86,8 +92,9 @@ public class WeeklyCalendarController extends AbstractController {
                                  @RequestParam("reaction") Long emojiId,
                                  Model model) throws
                                               TechnicalException {
-        DayOfActualMonth dayEntity = this.dayOfActualMonthRepository.findById(Long.valueOf(idDay))
-                                                                     .orElse(null);
+        DayOfActualMonth dayEntity = this.dayOfActualMonthRepository.findById(Long.valueOf(
+                                                 idDay))
+                                                                    .orElse(null);
 
         GifOfDayDto day = this.calendarService.addReactionForDayWithGif(
                 idDay,

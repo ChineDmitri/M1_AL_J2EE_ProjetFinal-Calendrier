@@ -110,7 +110,6 @@ public class CalendarServiceImpl implements ICalendarService {
         reaction.setGifOfDay(gif);
         gif.addOrReplaceIfExistReaction(reaction);
         this.gifOfDayRepository.save(gif);
-        System.out.println(gif.toString());
 
         return this.gifOfDayMapper.toDto(gif);
     }
